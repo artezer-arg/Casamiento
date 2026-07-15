@@ -5,13 +5,17 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "node server.js",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
     "lucide-react": "^1.24.0",
+    "node-firebird": "^2.8.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },
