@@ -18,6 +18,27 @@ export default function Navbar({ onOpenRSVP, config }) {
   const fechaLimite = config?.general?.fecha_limite_confirmacion;
   const isExpired = fechaLimite ? new Date() > new Date(fechaLimite) : false;
 
+  const getCountdownText = () => {
+    if (isExpired || !fechaLimite) return '';
+    const limit = new Date(fechaLimite);
+    const now = new Date();
+    const diffMs = limit - now;
+    if (diffMs <= 0) return '';
+
+    const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+    if (diffDays > 1) {
+      return ` (Quedan ${diffDays} días)`;
+    }
+    
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    if (diffHours >= 1) {
+      return ` (Quedan ${diffHours}h)`;
+    }
+
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    return ` (Quedan ${diffMinutes}m)`;
+  };
+
   const menuLinks = [
     { label: 'Inicio', href: '#root' },
     { label: 'Cuenta Regresiva', href: '#cuenta-regresiva' },
@@ -94,7 +115,7 @@ export default function Navbar({ onOpenRSVP, config }) {
               }}
             >
               <CalendarCheck size={16} />
-              {isExpired ? 'Confirmaciones cerradas' : 'Confirmar ahora'}
+              {isExpired ? 'Confirmaciones cerradas' : `Confirmar ahora${getCountdownText()}`}
             </button>
           </div>
         </div>
@@ -111,7 +132,7 @@ export default function Navbar({ onOpenRSVP, config }) {
           cursor: isExpired ? 'not-allowed' : 'pointer'
         }}
       >
-        {isExpired ? 'Confirmaciones cerradas' : 'Confirmar asistencia'}
+        {isExpired ? 'Confirmaciones cerradas' : `Confirmar asistencia${getCountdownText()}`}
       </button>
     </>
   );
