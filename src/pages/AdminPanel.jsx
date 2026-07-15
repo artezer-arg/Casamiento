@@ -5,7 +5,8 @@ import {
   LayoutDashboard, Info, Calendar, Image, Music, Gift, 
   Music2, MessageSquare, Shirt, CheckSquare, Settings, LogOut, 
   Plus, Trash2, Edit3, Save, Globe, Eye, Upload, Search, Download, 
-  ExternalLink, Check, Copy, AlertCircle, RefreshCw, Smartphone, Tablet, Monitor
+  ExternalLink, Check, Copy, AlertCircle, RefreshCw, Smartphone, Tablet, Monitor,
+  X
 } from 'lucide-react';
 
 const Instagram = ({ size = 24, strokeWidth = 2, className = '' }) => (
