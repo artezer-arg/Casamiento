@@ -1,8 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X, CalendarCheck } from 'lucide-react';
 
 export default function Navbar({ onOpenRSVP, config }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAtBottom, setIsAtBottom] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const threshold = 50;
+      const scrolledToBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - threshold);
+      setIsAtBottom(scrolledToBottom);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const fechaLimite = config?.general?.fecha_limite_confirmacion;
+  const isExpired = fechaLimite ? new Date() > new Date(fechaLimite) : false;
 
   const menuLinks = [
     { label: 'Inicio', href: '#root' },
@@ -71,14 +85,16 @@ export default function Navbar({ onOpenRSVP, config }) {
             <button 
               type="button" 
               className="btn btn-primary" 
-              style={{ marginTop: 'auto', gap: '0.5rem' }}
+              style={{ marginTop: 'auto', gap: '0.5rem', opacity: isExpired ? 0.6 : 1, cursor: isExpired ? 'not-allowed' : 'pointer' }}
+              disabled={isExpired}
               onClick={() => {
+                if (isExpired) return;
                 setIsOpen(false);
                 onOpenRSVP();
               }}
             >
               <CalendarCheck size={16} />
-              Confirmar ahora
+              {isExpired ? 'Confirmaciones cerradas' : 'Confirmar ahora'}
             </button>
           </div>
         </div>
@@ -86,11 +102,16 @@ export default function Navbar({ onOpenRSVP, config }) {
 
       {/* Permanent RSVP Action Button (Bottom Right) */}
       <button 
-        onClick={onOpenRSVP} 
-        className="btn btn-primary floating-rsvp-trigger"
-        aria-label="Confirmar asistencia al casamiento"
+        onClick={isExpired ? undefined : onOpenRSVP} 
+        disabled={isExpired}
+        className={`btn btn-primary floating-rsvp-trigger ${isAtBottom ? 'scrolled-to-bottom' : ''}`}
+        aria-label={isExpired ? "Confirmaciones cerradas" : "Confirmar asistencia al casamiento"}
+        style={{
+          opacity: isExpired ? 0.6 : 1,
+          cursor: isExpired ? 'not-allowed' : 'pointer'
+        }}
       >
-        Confirmar asistencia
+        {isExpired ? 'Confirmaciones cerradas' : 'Confirmar asistencia'}
       </button>
     </>
   );

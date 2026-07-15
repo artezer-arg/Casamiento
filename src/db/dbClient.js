@@ -317,7 +317,18 @@ export const dbClient = {
   confirmations: {
     async list() {
       try {
-        return await apiCall('/api/rsvps');
+        const data = await apiCall('/api/rsvps');
+        return data.map(r => ({
+          id: r.id,
+          dni: r.dni,
+          nombre: r.nombre,
+          apellido: r.apellido,
+          asiste: r.asistencia === 'si',
+          menores: r.menores,
+          restricciones_alimentarias: r.dieta || '',
+          comentarios: r.comentario || '',
+          fecha_creacion: r.fecha_creacion
+        }));
       } catch (err) {
         initLocalStorage();
         return JSON.parse(localStorage.getItem('np_confirmations'));
@@ -326,35 +337,56 @@ export const dbClient = {
 
     async add(rsvpData) {
       try {
+        const payload = {
+          dni: rsvpData.dni,
+          nombre: rsvpData.nombre,
+          apellido: rsvpData.apellido,
+          asistencia: rsvpData.asiste ? 'si' : 'no',
+          menores: rsvpData.menores || 0,
+          dieta: rsvpData.restricciones_alimentarias || '',
+          comentario: rsvpData.comentarios || ''
+        };
         return await apiCall('/api/rsvps', {
           method: 'POST',
-          body: JSON.stringify(rsvpData)
+          body: JSON.stringify(payload)
         });
       } catch (err) {
-        initLocalStorage();
-        const rsvps = JSON.parse(localStorage.getItem('np_confirmations'));
-        
-        // DNI check
-        if (rsvps.some(r => r.dni === rsvpData.dni)) {
-          throw new Error('Este DNI ya registró su confirmación de asistencia.');
-        }
+        if (err.message === 'FALLBACK_ACTIVE') {
+          initLocalStorage();
+          const rsvps = JSON.parse(localStorage.getItem('np_confirmations'));
+          
+          // DNI check
+          if (rsvps.some(r => r.dni === rsvpData.dni)) {
+            throw new Error('Este DNI ya registró su confirmación de asistencia.');
+          }
 
-        const newRsvp = {
-          id: 'rsvp-' + Date.now(),
-          fecha_creacion: new Date().toISOString(),
-          ...rsvpData
-        };
-        rsvps.push(newRsvp);
-        localStorage.setItem('np_confirmations', JSON.stringify(rsvps));
-        return newRsvp;
+          const newRsvp = {
+            id: 'rsvp-' + Date.now(),
+            fecha_creacion: new Date().toISOString(),
+            ...rsvpData
+          };
+          rsvps.push(newRsvp);
+          localStorage.setItem('np_confirmations', JSON.stringify(rsvps));
+          return newRsvp;
+        }
+        throw err;
       }
     },
 
     async update(id, updates) {
       try {
+        const payload = {};
+        if (updates.dni !== undefined) payload.dni = updates.dni;
+        if (updates.nombre !== undefined) payload.nombre = updates.nombre;
+        if (updates.apellido !== undefined) payload.apellido = updates.apellido;
+        if (updates.asiste !== undefined) payload.asistencia = updates.asiste ? 'si' : 'no';
+        if (updates.menores !== undefined) payload.menores = updates.menores;
+        if (updates.restricciones_alimentarias !== undefined) payload.dieta = updates.restricciones_alimentarias;
+        if (updates.comentarios !== undefined) payload.comentario = updates.comentarios;
+
         return await apiCall(`/api/rsvps/${id}`, {
           method: 'PUT',
-          body: JSON.stringify(updates)
+          body: JSON.stringify(payload)
         });
       } catch (err) {
         initLocalStorage();

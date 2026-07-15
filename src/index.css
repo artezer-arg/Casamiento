@@ -1250,6 +1250,14 @@ section:last-of-type::after {
   box-shadow: var(--shadow-md);
   font-size: 0.75rem;
   padding: 0.8rem 1.5rem;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s, box-shadow 0.3s, color 0.3s !important;
+}
+
+.floating-rsvp-trigger.scrolled-to-bottom {
+  transform: scale(1.22) !important;
+  box-shadow: 0 12px 24px rgba(197, 160, 89, 0.4) !important;
+  background-color: var(--color-gold) !important;
+  color: var(--color-white) !important;
 }
 
 /* 14. Footer */
