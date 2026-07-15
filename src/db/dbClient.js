@@ -128,6 +128,9 @@ initLocalStorage();
 // Global fallback indicator
 let fallbackActive = false;
 
+// API Base URL for external hosting (e.g. Vercel connecting to a public API server)
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '';
+
 // Helper: Performs a fetch call with auto-fallback to local storage
 const apiCall = async (url, options = {}) => {
   if (fallbackActive) {
@@ -135,7 +138,7 @@ const apiCall = async (url, options = {}) => {
   }
 
   try {
-    const res = await fetch(url, {
+    const res = await fetch(`${apiBaseUrl}${url}`, {
       ...options,
       headers: {
         'Content-Type': 'application/json',
