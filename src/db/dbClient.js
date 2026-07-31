@@ -156,6 +156,27 @@ if (supabaseUrl && supabaseAnonKey && supabaseUrl !== 'YOUR_SUPABASE_URL') {
 // Helper: Deep copy helper
 const clone = (obj) => JSON.parse(JSON.stringify(obj));
 
+// Merge utility to ensure no null/undefined properties crash the React app
+const mergeConfig = (dbConfig) => {
+  const merged = clone(DEFAULT_CONFIG);
+  if (!dbConfig) return merged;
+  
+  if (dbConfig.general) merged.general = { ...merged.general, ...dbConfig.general };
+  if (dbConfig.evento) merged.evento = { ...merged.evento, ...dbConfig.evento };
+  if (dbConfig.enlaces) merged.enlaces = { ...merged.enlaces, ...dbConfig.enlaces };
+  if (dbConfig.regalos) merged.regalos = { ...merged.regalos, ...dbConfig.regalos };
+  if (dbConfig.musica) merged.musica = { ...merged.musica, ...dbConfig.musica };
+  
+  // Strip metadata IDs from database results
+  if (merged.general) delete merged.general.id;
+  if (merged.evento) delete merged.evento.id;
+  if (merged.enlaces) delete merged.enlaces.id;
+  if (merged.regalos) delete merged.regalos.id;
+  if (merged.musica) delete merged.musica.id;
+  
+  return merged;
+};
+
 // -------------------------------------------------------------
 // 2. EXPORTED DATABASE CLIENT INTERFACE (SUPABASE + LOCALSTORAGE FALLBACK)
 // -------------------------------------------------------------
@@ -167,24 +188,27 @@ export const dbClient = {
       if (!useMock) {
         try {
           const results = await Promise.all([
-            supabase.from('configuracion_general').select('*').eq('id', state).single(),
-            supabase.from('evento').select('*').eq('id', state).single(),
-            supabase.from('enlaces').select('*').eq('id', state).single(),
-            supabase.from('regalos').select('*').eq('id', state).single(),
-            supabase.from('musica').select('*').eq('id', state).single(),
+            supabase.from('configuracion_general').select('*').eq('id', state).maybeSingle(),
+            supabase.from('evento').select('*').eq('id', state).maybeSingle(),
+            supabase.from('enlaces').select('*').eq('id', state).maybeSingle(),
+            supabase.from('regalos').select('*').eq('id', state).maybeSingle(),
+            supabase.from('musica').select('*').eq('id', state).maybeSingle(),
           ]);
 
           const errors = results.filter(r => r.error);
           if (errors.length > 0) {
-            console.error('Supabase get config error:', errors);
+            console.error('Supabase get config error, falling back:', errors);
           } else {
-            return {
-              general: results[0].data,
-              evento: results[1].data,
-              enlaces: results[2].data,
-              regalos: results[3].data,
-              musica: results[4].data,
-            };
+            const general = results[0].data;
+            const evento = results[1].data;
+            const enlaces = results[2].data;
+            const regalos = results[3].data;
+            const musica = results[4].data;
+
+            // If we successfully fetched at least some data, return merged config
+            if (general || evento || enlaces || regalos || musica) {
+              return mergeConfig({ general, evento, enlaces, regalos, musica });
+            }
           }
         } catch (err) {
           console.error('Failed to get config from Supabase, falling back:', err);
