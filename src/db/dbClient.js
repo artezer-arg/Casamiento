@@ -44,7 +44,10 @@ const DEFAULT_CONFIG = {
   },
   musica: {
     volumen_inicial: 0.5,
-    loop: true
+    loop: true,
+    cancion_nombre: 'Te conocí',
+    artista: 'Zenar y Dario Coiro',
+    cancion_url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
   }
 };
 
@@ -119,6 +122,9 @@ const initLocalStorage = () => {
   }
   if (!localStorage.getItem('np_history')) {
     localStorage.setItem('np_history', JSON.stringify(DEFAULT_HISTORY));
+  }
+  if (!localStorage.getItem('np_messages')) {
+    localStorage.setItem('np_messages', JSON.stringify([]));
   }
 };
 
@@ -331,43 +337,54 @@ export const dbClient = {
         }));
       } catch (err) {
         initLocalStorage();
-        return JSON.parse(localStorage.getItem('np_confirmations'));
+        return JSON.parse(localStorage.getItem('np_confirmations') || '[]');
       }
     },
 
     async add(rsvpData) {
+      const isArray = Array.isArray(rsvpData);
+      const dataList = isArray ? rsvpData : [rsvpData];
+
       try {
-        const payload = {
-          dni: rsvpData.dni,
-          nombre: rsvpData.nombre,
-          apellido: rsvpData.apellido,
-          asistencia: rsvpData.asiste ? 'si' : 'no',
-          menores: rsvpData.menores || 0,
-          dieta: rsvpData.restricciones_alimentarias || '',
-          comentario: rsvpData.comentarios || ''
-        };
+        const payload = dataList.map(g => ({
+          dni: g.dni,
+          nombre: g.nombre,
+          apellido: g.apellido,
+          asistencia: g.asiste ? 'si' : 'no',
+          menores: g.menores || 0,
+          dieta: g.restricciones_alimentarias || '',
+          comentario: g.comentarios || ''
+        }));
+        
         return await apiCall('/api/rsvps', {
           method: 'POST',
-          body: JSON.stringify(payload)
+          body: JSON.stringify(isArray ? payload : payload[0])
         });
       } catch (err) {
         if (err.message === 'FALLBACK_ACTIVE') {
           initLocalStorage();
-          const rsvps = JSON.parse(localStorage.getItem('np_confirmations'));
+          const rsvps = JSON.parse(localStorage.getItem('np_confirmations') || '[]');
           
           // DNI check
-          if (rsvps.some(r => r.dni === rsvpData.dni)) {
-            throw new Error('Este DNI ya registró su confirmación de asistencia.');
+          for (const g of dataList) {
+            if (rsvps.some(r => r.dni === g.dni)) {
+              throw new Error(`El DNI ${g.dni} (${g.nombre} ${g.apellido}) ya registró su confirmación de asistencia.`);
+            }
           }
 
-          const newRsvp = {
-            id: 'rsvp-' + Date.now(),
-            fecha_creacion: new Date().toISOString(),
-            ...rsvpData
-          };
-          rsvps.push(newRsvp);
+          const insertedList = [];
+          for (const g of dataList) {
+            const newRsvp = {
+              id: 'rsvp-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
+              fecha_creacion: new Date().toISOString(),
+              ...g
+            };
+            rsvps.push(newRsvp);
+            insertedList.push(newRsvp);
+          }
+
           localStorage.setItem('np_confirmations', JSON.stringify(rsvps));
-          return newRsvp;
+          return isArray ? insertedList : insertedList[0];
         }
         throw err;
       }
@@ -456,6 +473,55 @@ export const dbClient = {
         const songs = JSON.parse(localStorage.getItem('np_songs'));
         const filtered = songs.filter(s => s.id !== id);
         localStorage.setItem('np_songs', JSON.stringify(filtered));
+      }
+    }
+  },
+
+  // MESSAGES (LIBRO DE FIRMAS)
+  messages: {
+    async list() {
+      try {
+        return await apiCall('/api/messages');
+      } catch (err) {
+        initLocalStorage();
+        return JSON.parse(localStorage.getItem('np_messages') || '[]');
+      }
+    },
+
+    async add(msgData) {
+      try {
+        return await apiCall('/api/messages', {
+          method: 'POST',
+          body: JSON.stringify(msgData)
+        });
+      } catch (err) {
+        if (err.message === 'FALLBACK_ACTIVE') {
+          initLocalStorage();
+          const messages = JSON.parse(localStorage.getItem('np_messages') || '[]');
+          const newMsg = {
+            id: 'msg-' + Date.now(),
+            fecha_creacion: new Date().toISOString(),
+            autor: msgData.autor,
+            mensaje: msgData.mensaje
+          };
+          messages.push(newMsg);
+          localStorage.setItem('np_messages', JSON.stringify(messages));
+          return newMsg;
+        }
+        throw err;
+      }
+    },
+
+    async delete(id) {
+      try {
+        return await apiCall(`/api/messages/${id}`, {
+          method: 'DELETE'
+        });
+      } catch (err) {
+        initLocalStorage();
+        const messages = JSON.parse(localStorage.getItem('np_messages') || '[]');
+        const filtered = messages.filter(m => m.id !== id);
+        localStorage.setItem('np_messages', JSON.stringify(filtered));
       }
     }
   },

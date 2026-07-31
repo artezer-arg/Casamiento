@@ -1198,6 +1198,25 @@ export default function AdminPanel() {
                       )}
                     </div>
                   </div>
+
+                  {/* Google Sheets Sync */}
+                  <div className="admin-form-section" style={{ borderTop: '1px solid #e2e8f0', paddingTop: '1.5rem', marginTop: '1.5rem' }}>
+                    <h5 style={{ fontWeight: 600, fontSize: '0.95rem', color: 'var(--color-olive)', marginBottom: '1rem' }}>Sincronización de RSVPs (Google Sheets)</h5>
+                    <div className="admin-form-group full-width">
+                      <label className="admin-label">URL del Apps Script Web App</label>
+                      <input 
+                        type="url" 
+                        className="admin-input" 
+                        value={enlacesForm.google_sheets_url || ''}
+                        onChange={(e) => setEnlacesForm({ ...enlacesForm, google_sheets_url: e.target.value })}
+                        placeholder="https://script.google.com/macros/s/AKfycb.../exec"
+                      />
+                      <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.25rem', display: 'block' }}>
+                        Pegá la URL de tu Web App de Google Apps Script generado desde tu planilla. Al confirmar asistencia, los datos se enviarán allí en tiempo real.
+                      </span>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </div>

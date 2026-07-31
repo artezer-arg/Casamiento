@@ -9,6 +9,7 @@ import DressCode from '../components/DressCode';
 import Gifts from '../components/Gifts';
 import SongSuggester from '../components/SongSuggester';
 import SocialLinks from '../components/SocialLinks';
+import Guestbook from '../components/Guestbook';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import RSVPModal from '../components/RSVPModal';
@@ -93,6 +94,9 @@ export default function Invitation() {
           
           {/* Sugerir canciones */}
           <SongSuggester config={currentConfig} onSubmit={submitSong} />
+          
+          {/* Libro de firmas (Mensajes emotivos) */}
+          <Guestbook />
           
           {/* Instagram & share memories */}
           <SocialLinks config={currentConfig} />

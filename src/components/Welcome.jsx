@@ -1,5 +1,5 @@
 import React from 'react';
-import { Music, Volume2 } from 'lucide-react';
+import { Mail } from 'lucide-react';
 
 export default function Welcome({ onEnter, nombres = 'Nestor & Pame' }) {
   return (
@@ -26,13 +26,14 @@ export default function Welcome({ onEnter, nombres = 'Nestor & Pame' }) {
         <p className="welcome-title">Bienvenidos a nuestra invitación</p>
         <h2 className="welcome-names">{nombres}</h2>
 
-        <div className="welcome-buttons">
-          <button className="btn btn-primary" onClick={() => onEnter(true)}>
-            <Volume2 size={18} />
-            Ingresar con música
-          </button>
-          <button className="btn btn-secondary" onClick={() => onEnter(false)}>
-            Ingresar sin música
+        <div className="welcome-buttons" style={{ display: 'flex', justifyContent: 'center' }}>
+          <button 
+            className="btn btn-primary" 
+            onClick={() => onEnter(true)}
+            style={{ width: '100%', maxWidth: '240px', display: 'flex', gap: '0.5rem', justifyContent: 'center', alignItems: 'center' }}
+          >
+            <Mail size={18} />
+            Abrir Invitación
           </button>
         </div>
       </div>

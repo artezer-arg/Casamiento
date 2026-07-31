@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function Cover({ config, photos }) {
   const nombres = config?.general?.nombres_novios || 'Nestor y Pame';
@@ -17,6 +17,39 @@ export default function Cover({ config, photos }) {
   const coverPhoto = photos?.find(p => p.tipo === 'portada' && p.visible);
   const coverUrl = coverPhoto?.url || 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800';
   const alignment = coverPhoto?.posicion_encuadre || 'center';
+
+  // Countdown timer logic
+  const fecha = config?.evento?.fecha || '2026-10-24';
+  const horario = config?.evento?.horario || '17:45';
+  const timezoneOffset = '-03:00';
+
+  const getTargetDate = () => {
+    const cleanHorario = horario.length === 5 ? `${horario}:00` : horario;
+    return new Date(`${fecha}T${cleanHorario}${timezoneOffset}`);
+  };
+
+  const calculateTimeLeft = () => {
+    const target = getTargetDate();
+    const now = new Date();
+    const difference = target.getTime() - now.getTime();
+    if (difference <= 0) return null;
+    return {
+      dias: Math.floor(difference / (1000 * 60 * 60 * 24)),
+      horas: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      minutos: Math.floor((difference / 1000 / 60) % 60),
+      segundos: Math.floor((difference / 1000) % 60),
+    };
+  };
+
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
+  useEffect(() => {
+    setTimeLeft(calculateTimeLeft());
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [fecha, horario]);
 
   return (
     <div 
@@ -115,6 +148,32 @@ export default function Cover({ config, photos }) {
           >
             DOS MIL VEINTISÉIS
           </span>
+
+          {/* Section 5b: Cover Countdown */}
+          {timeLeft ? (
+            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', marginBottom: '1.25rem', zIndex: 2 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '40px', padding: '0.35rem 0.5rem', border: '1px solid rgba(197, 160, 89, 0.25)', borderRadius: '4px', backgroundColor: '#faf7f1' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--color-olive)', fontFamily: 'monospace' }}>{String(timeLeft.dias).padStart(2, '0')}</span>
+                <span style={{ fontSize: '0.55rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', marginTop: '1px', letterSpacing: '0.05em' }}>Días</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '40px', padding: '0.35rem 0.5rem', border: '1px solid rgba(197, 160, 89, 0.25)', borderRadius: '4px', backgroundColor: '#faf7f1' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--color-olive)', fontFamily: 'monospace' }}>{String(timeLeft.horas).padStart(2, '0')}</span>
+                <span style={{ fontSize: '0.55rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', marginTop: '1px', letterSpacing: '0.05em' }}>Hs</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '40px', padding: '0.35rem 0.5rem', border: '1px solid rgba(197, 160, 89, 0.25)', borderRadius: '4px', backgroundColor: '#faf7f1' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--color-olive)', fontFamily: 'monospace' }}>{String(timeLeft.minutos).padStart(2, '0')}</span>
+                <span style={{ fontSize: '0.55rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', marginTop: '1px', letterSpacing: '0.05em' }}>Min</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '40px', padding: '0.35rem 0.5rem', border: '1px solid rgba(197, 160, 89, 0.25)', borderRadius: '4px', backgroundColor: '#faf7f1' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--color-olive)', fontFamily: 'monospace' }}>{String(timeLeft.segundos).padStart(2, '0')}</span>
+                <span style={{ fontSize: '0.55rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', marginTop: '1px', letterSpacing: '0.05em' }}>Seg</span>
+              </div>
+            </div>
+          ) : (
+            <div style={{ fontSize: '0.85rem', color: 'var(--color-gold)', fontWeight: 600, marginBottom: '1.25rem', letterSpacing: '0.1em' }}>
+              ¡LLEGÓ NUESTRO GRAN DÍA! 💍
+            </div>
+          )}
 
           {/* Section 6: CALLIGRAPHY FOOTER */}
           <span className="script-text" style={{ fontSize: '1.6rem', color: 'var(--color-gold)', marginBottom: '1.25rem' }}>

@@ -69,7 +69,10 @@ const DEFAULT_CONFIG = {
   },
   musica: {
     volumen_inicial: 0.5,
-    loop: true
+    loop: true,
+    cancion_nombre: 'Te conocí',
+    artista: 'Zenar y Dario Coiro',
+    cancion_url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
   }
 };
 
@@ -138,6 +141,15 @@ const tables = [
       ACCION VARCHAR(50) NOT NULL,
       FECHA TIMESTAMP NOT NULL,
       DETALLE VARCHAR(255)
+    )`
+  },
+  {
+    name: 'MENSAJES',
+    sql: `CREATE TABLE MENSAJES (
+      ID INTEGER NOT NULL PRIMARY KEY,
+      AUTOR VARCHAR(100) NOT NULL,
+      MENSAJE VARCHAR(1000) NOT NULL,
+      FECHA_CREACION TIMESTAMP NOT NULL
     )`
   }
 ];
@@ -402,34 +414,109 @@ function startWebServer() {
     });
   });
 
-  // 7. RSVPS: CREATE
+  // Google Sheets sync helper (fetches URL from CONFIGURACION database first, falls back to process.env)
+  async function postToGoogleSheets(db, rsvps) {
+    db.query("SELECT CONFIG_JSON FROM CONFIGURACION WHERE TIPO = 'published'", function(err, result) {
+      if (err || !result || result.length === 0) {
+        console.log('Published configuration not found in DB. Skipping Google Sheets sync.');
+        return;
+      }
+      try {
+        const config = JSON.parse(result[0].CONFIG_JSON);
+        const sheetsUrl = config.enlaces?.google_sheets_url || process.env.GOOGLE_SHEETS_URL || '';
+        
+        if (!sheetsUrl) {
+          console.log('Google Sheets sync URL not configured. Skipping.');
+          return;
+        }
+
+        const payload = {
+          invitados: rsvps.map(g => ({
+            nombre: g.nombre,
+            apellido: g.apellido,
+            dni: g.dni,
+            asistencia: g.asistencia === 'si' ? 'Sí' : 'No',
+            dieta: g.dieta || 'Ninguna',
+            comentario: g.comentario || ''
+          }))
+        };
+        
+        fetch(sheetsUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        }).then(res => res.json())
+          .then(result => console.log('Successfully synced to Google Sheets:', result))
+          .catch(err => console.error('Failed to sync to Google Sheets:', err.message));
+          
+      } catch (e) {
+        console.error('Error parsing config for Google Sheets sync:', e.message);
+      }
+    });
+  }
+
+  // 7. RSVPS: CREATE (Supports single or array of guests for groups)
   app.post('/api/rsvps', withDb, (req, res) => {
-    const { dni, nombre, apellido, asistencia, menores, dieta, comentario } = req.body;
-    
-    if (!dni || !nombre || !apellido || !asistencia) {
-      return res.status(400).json({ error: 'Campos requeridos faltantes.' });
+    const body = req.body;
+    const isArray = Array.isArray(body);
+    const guests = isArray ? body : [body];
+
+    // Validate all guests first
+    for (const g of guests) {
+      if (!g.dni || !g.nombre || !g.apellido) {
+        return res.status(400).json({ error: 'Todos los campos (DNI, Nombre, Apellido) son obligatorios.' });
+      }
     }
 
-    // Check duplicate DNI
-    req.db.query('SELECT ID FROM RSVPS WHERE DNI = ?', [dni], function(err, result) {
-      if (err) return res.status(500).json({ error: err.message });
-      if (result && result.length > 0) {
-        return res.status(400).json({ error: 'Este DNI ya registró su confirmación de asistencia.' });
+    let inserted = [];
+    let index = 0;
+
+    function insertNext() {
+      if (index >= guests.length) {
+        // Sync to Google Sheets in background
+        postToGoogleSheets(req.db, inserted);
+        return res.json(isArray ? inserted : inserted[0]);
       }
 
-      getNextId(req.db, 'RSVPS', function(err, nextId) {
+      const g = guests[index];
+      const { dni, nombre, apellido, asistencia, menores, dieta, comentario } = g;
+
+      // Check duplicate DNI
+      req.db.query('SELECT ID FROM RSVPS WHERE DNI = ?', [dni], function(err, result) {
         if (err) return res.status(500).json({ error: err.message });
-        
-        req.db.query(
-          'INSERT INTO RSVPS (ID, DNI, NOMBRE, APELLIDO, ASISTENCIA, MENORES, DIETA, COMENTARIO, FECHA_CREACION) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-          [nextId, dni, nombre, apellido, asistencia, parseInt(menores || '0'), dieta || '', comentario || '', new Date()],
-          function(err) {
-            if (err) return res.status(500).json({ error: err.message });
-            res.json({ success: true, id: nextId });
-          }
-        );
+        if (result && result.length > 0) {
+          return res.status(400).json({ error: `El DNI ${dni} (${nombre} ${apellido}) ya registró su confirmación de asistencia.` });
+        }
+
+        getNextId(req.db, 'RSVPS', function(err, nextId) {
+          if (err) return res.status(500).json({ error: err.message });
+          
+          req.db.query(
+            'INSERT INTO RSVPS (ID, DNI, NOMBRE, APELLIDO, ASISTENCIA, MENORES, DIETA, COMENTARIO, FECHA_CREACION) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            [nextId, dni.trim(), nombre.trim(), apellido.trim(), asistencia || 'si', parseInt(menores || '0'), dieta || '', comentario || '', new Date()],
+            function(err) {
+              if (err) return res.status(500).json({ error: err.message });
+              inserted.push({
+                id: nextId,
+                dni: dni.trim(),
+                nombre: nombre.trim(),
+                apellido: apellido.trim(),
+                asistencia: asistencia || 'si',
+                menores: parseInt(menores || '0'),
+                dieta: dieta || '',
+                comentario: comentario || ''
+              });
+              index++;
+              insertNext();
+            }
+          );
+        });
       });
-    });
+    }
+
+    insertNext();
   });
 
   // 8. RSVPS: UPDATE
@@ -617,6 +704,52 @@ function startWebServer() {
         detalle: r.DETALLE || ''
       }));
       res.json(list);
+    });
+  });
+
+  // 18. GUEST MESSAGES: GET ALL
+  app.get('/api/messages', withDb, (req, res) => {
+    req.db.query('SELECT ID, AUTOR, MENSAJE, FECHA_CREACION FROM MENSAJES ORDER BY FECHA_CREACION DESC', function(err, result) {
+      if (err) return res.status(500).json({ error: err.message });
+      
+      const list = (result || []).map(r => ({
+        id: r.ID,
+        autor: r.AUTOR,
+        mensaje: r.MENSAJE,
+        fecha_creacion: r.FECHA_CREACION
+      }));
+      res.json(list);
+    });
+  });
+
+  // 19. GUEST MESSAGES: CREATE
+  app.post('/api/messages', withDb, (req, res) => {
+    const { autor, mensaje } = req.body;
+    if (!autor || !mensaje) {
+      return res.status(400).json({ error: 'Autor y mensaje son obligatorios.' });
+    }
+    
+    req.db.query('SELECT COALESCE(MAX(ID), 0) + 1 AS NEXT_ID FROM MENSAJES', function(err, result) {
+      if (err) return res.status(500).json({ error: err.message });
+      const nextId = result[0].NEXT_ID;
+      
+      req.db.query(
+        'INSERT INTO MENSAJES (ID, AUTOR, MENSAJE, FECHA_CREACION) VALUES (?, ?, ?, CURRENT_TIMESTAMP)',
+        [nextId, autor.trim(), mensaje.trim()],
+        function(err) {
+          if (err) return res.status(500).json({ error: err.message });
+          res.json({ id: nextId, autor: autor.trim(), mensaje: mensaje.trim(), fecha_creacion: new Date().toISOString() });
+        }
+      );
+    });
+  });
+
+  // 20. GUEST MESSAGES: DELETE BY ID (For administration)
+  app.delete('/api/messages/:id', withDb, (req, res) => {
+    const id = parseInt(req.params.id);
+    req.db.query('DELETE FROM MENSAJES WHERE ID = ?', [id], function(err) {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ success: true });
     });
   });
 
