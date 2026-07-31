@@ -89,10 +89,10 @@ export default function Cover({ config, photos }) {
           <span className="ref-subheading">PARA EL CASAMIENTO DE</span>
 
           {/* Section 3: NAMES */}
-          <h3 className="ref-names">
-            NESTOR 
-            <span className="script-text" style={{ display: 'block', fontSize: '2.5rem', margin: '0.1rem 0' }}>y</span> 
-            PAME
+          <h3 className="ref-names" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', flexWrap: 'wrap', width: '100%', margin: '0.5rem 0' }}>
+            <span>NESTOR</span>
+            <span className="script-text" style={{ fontSize: '2.4rem', margin: '0 0.1rem', transform: 'translateY(-4px)' }}>y</span>
+            <span>PAME</span>
           </h3>
 
           {/* Section 4: DATE GRID saturday | 24 | october */}
