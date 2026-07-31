@@ -774,8 +774,8 @@ export const dbClient = {
     }
   },
 
-  // LOGS (HISTORIAL)
-  logs: {
+  // HISTORY / LOGS
+  history: {
     async list() {
       if (!useMock) {
         try {
@@ -792,6 +792,11 @@ export const dbClient = {
 
       initLocalStorage();
       return JSON.parse(localStorage.getItem('np_history') || '[]');
+    }
+  },
+  logs: {
+    async list() {
+      return await dbClient.history.list();
     }
   },
 
