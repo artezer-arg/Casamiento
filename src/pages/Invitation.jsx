@@ -80,9 +80,7 @@ export default function Invitation() {
           {/* Emotive phrase */}
           <Frase config={currentConfig} />
           
-          {/* Cuenta regresiva */}
-          <Countdown config={currentConfig} />
-          
+
           {/* Fecha, lugar, maps, calendario */}
           <Details config={currentConfig} />
           
