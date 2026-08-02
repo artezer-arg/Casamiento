@@ -134,8 +134,8 @@ const initLocalStorage = () => {
 initLocalStorage();
 
 // Supabase Client Setup
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://awdnnidqapvgnazpqush.supabase.co';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3ZG5uaWRxYXB2Z25henBxdXNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU1MTQ5NzgsImV4cCI6MjEwMTA5MDk3OH0.TPYLgneOue3KI_RTKqcXb2LxNW-ftdYd5Um_OmgJ2TI';
 
 let supabase = null;
 let useMock = true;
