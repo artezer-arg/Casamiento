@@ -14,7 +14,7 @@ import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import RSVPModal from '../components/RSVPModal';
 import MusicPlayer from '../components/MusicPlayer';
-import { Loader } from 'lucide-react';
+import { Loader, Heart } from 'lucide-react';
 
 export default function Invitation() {
   const { currentConfig, currentPhotos, submitRSVP, submitSong, loading } = useAppContext();
