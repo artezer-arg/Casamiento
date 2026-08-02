@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MapPin, Calendar, Map, Check } from 'lucide-react';
+import { MapPin, Calendar, Map, Check, Church, Martini, Sparkles, Utensils, Music, Moon, Heart } from 'lucide-react';
 
 export default function Details({ config }) {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -12,15 +12,12 @@ export default function Details({ config }) {
   const direccion = evento.direccion || 'Mateo Blanco 369, Campana, Buenos Aires';
   const mapsUrl = evento.maps_url || 'https://maps.google.com/?q=Las+Moras+Eventos+Mateo+Blanco+369+Campana';
   const horaFinalizacion = evento.hora_finalizacion || '04:00';
-  const descripcionText = evento.ceremonia_fiesta_text || 'La ceremonia y la fiesta se realizarán en el mismo lugar. Luego de la ceremonia, continuaremos celebrando juntos.';
   const calTitulo = evento.calendario_titulo || 'Casamiento de Nestor y Pame';
   const calDesc = evento.calendario_descripcion || '¡Acompañanos a celebrar nuestro casamiento!';
 
   // Format date display: e.g. "Sábado 24 de Octubre de 2026"
   const getFormattedDate = () => {
-    // Hardcoded initial default for safety, otherwise parse
     if (fecha === '2026-10-24') return 'Sábado 24 de Octubre de 2026';
-    
     try {
       const parts = fecha.split('-');
       const d = new Date(parts[0], parts[1] - 1, parts[2]);
@@ -32,7 +29,6 @@ export default function Details({ config }) {
     }
   };
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -43,22 +39,16 @@ export default function Details({ config }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Compute dates for calendars
   const getDates = () => {
-    // Argentina offset is UTC-3
     const startIsoStr = `${fecha}T${horario.substring(0, 5)}:00-03:00`;
     const startDate = new Date(startIsoStr);
-    
     const endDate = new Date(startDate.getTime());
     const [endH, endM] = horaFinalizacion.split(':').map(Number);
     endDate.setHours(endH);
     endDate.setMinutes(endM);
-    
-    // If end time is earlier than start time, it means next day
     if (endDate.getTime() <= startDate.getTime()) {
       endDate.setDate(endDate.getDate() + 1);
     }
-
     return { startDate, endDate };
   };
 
@@ -79,7 +69,6 @@ export default function Details({ config }) {
   const downloadICS = () => {
     const { startDate, endDate } = getDates();
     const formatICS = (date) => date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-    
     const content = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
@@ -106,92 +95,145 @@ export default function Details({ config }) {
     setShowDropdown(false);
   };
 
+  const timelineEvents = [
+    { time: '17:45 HS', desc: 'Ceremonia Religiosa', icon: Church },
+    { time: '18:30 HS', desc: 'Cóctel de bienvenida', icon: Martini },
+    { time: '19:45 HS', desc: 'Entrada de los novios', icon: Sparkles },
+    { time: '20:00 HS', desc: 'Cena y brindis', icon: Utensils },
+    { time: '21:00 HS', desc: '¡Inicio de la tanda de baile!', icon: Music },
+    { time: '04:00 HS', desc: 'Fin de fiesta y despedida', icon: Moon }
+  ];
+
   return (
-    <section id="ceremonia-y-fiesta" style={{ position: 'relative' }}>
-      <h2 className="section-title">Ceremonia y Fiesta</h2>
-      <p className="section-subtitle">Cuándo y Dónde</p>
+    <section id="ceremonia-y-fiesta" style={{ padding: '2rem 1.5rem', position: 'relative' }}>
+      
+      {/* 1. Ceremonia Religiosa details */}
+      <div style={{ textAlign: 'center', margin: '1rem 0' }}>
+        <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-gold)', fontWeight: 600 }}>17:45 hs</span>
+        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', color: 'var(--color-text-dark)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0.35rem 0' }}>Ceremonia Religiosa</h3>
+        <p style={{ fontFamily: 'var(--font-serif)', fontSize: '0.85rem', color: 'var(--color-text-muted)', margin: '0.2rem 0 1rem 0' }}>
+          {lugar}<br />
+          <span style={{ fontSize: '0.75rem' }}>{direccion}</span>
+        </p>
+        <a 
+          href={mapsUrl} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="design-btn-dark"
+        >
+          <MapPin size={14} />
+          Ver Ubicación
+        </a>
+      </div>
 
-      <div className="arch-card-wrapper">
-        <div className="arch-card animate-fade-in-up">
-          {/* Botanical leaf icon top center */}
-          <div style={{ color: 'var(--color-gold)', display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
-            <MapPin size={32} strokeWidth={1.5} />
-          </div>
+      {/* Separator */}
+      <div className="design-separator">
+        <Heart size={10} className="design-separator-heart" fill="currentColor" strokeWidth={0} />
+      </div>
 
-          <div className="details-item">
-            <span className="details-label">Día</span>
-            <span className="details-value">{getFormattedDate()}</span>
-          </div>
+      {/* 2. Recepción & Fiesta details */}
+      <div style={{ textAlign: 'center', margin: '1.5rem 0' }}>
+        <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-gold)', fontWeight: 600 }}>20:00 hs</span>
+        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', color: 'var(--color-text-dark)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0.35rem 0' }}>Recepción & Fiesta</h3>
+        <p style={{ fontFamily: 'var(--font-serif)', fontSize: '0.85rem', color: 'var(--color-text-muted)', margin: '0.2rem 0 1rem 0' }}>
+          {lugar} (Salón Principal)<br />
+          <span style={{ fontSize: '0.75rem' }}>{direccion}</span>
+        </p>
+        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <a 
+            href={mapsUrl} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="design-btn-dark"
+          >
+            <MapPin size={14} />
+            Ver Ubicación
+          </a>
 
-          <div className="details-item">
-            <span className="details-label">Horario</span>
-            <span className="details-value">{horario.substring(0, 5)} hs</span>
-          </div>
-
-          <div className="details-item" style={{ marginBottom: '1rem' }}>
-            <span className="details-label">Lugar</span>
-            <span className="details-value" style={{ fontWeight: 600 }}>{lugar}</span>
-            <span className="details-value-sub">{direccion}</span>
-          </div>
-
-          <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', fontStyle: 'italic', margin: '0.5rem 0', lineHeight: '1.5' }}>
-            {descripcionText}
-          </p>
-
-          <div className="details-buttons">
-            <a 
-              href={mapsUrl} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="btn btn-primary"
+          {/* Calendar dropdown button inside layout style */}
+          <div style={{ position: 'relative' }} ref={dropdownRef}>
+            <button 
+              className="design-btn-dark" 
+              onClick={() => setShowDropdown(!showDropdown)}
+              style={{ backgroundColor: 'var(--color-olive)' }}
             >
-              <Map size={18} />
-              Cómo llegar
-            </a>
-
-            <div className="agenda-wrapper" ref={dropdownRef}>
-              <button 
-                className="btn btn-secondary" 
-                onClick={() => setShowDropdown(!showDropdown)}
-                style={{ width: '100%' }}
-              >
-                <Calendar size={18} />
-                Agendar evento
-              </button>
-
-              {showDropdown && (
-                <div className="calendar-options-dropdown" style={{ bottom: '100%', top: 'auto', marginBottom: '0.5rem' }}>
-                  <a 
-                    href={getGoogleCalendarUrl()} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="calendar-option-btn"
-                    onClick={() => setShowDropdown(false)}
-                  >
-                    Google Calendar
-                  </a>
-                  <a 
-                    href={getOutlookCalendarUrl()} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="calendar-option-btn"
-                    onClick={() => setShowDropdown(false)}
-                  >
-                    Outlook Web
-                  </a>
-                  <button 
-                    type="button" 
-                    onClick={downloadICS} 
-                    className="calendar-option-btn"
-                  >
-                    Descargar archivo .ics
-                  </button>
-                </div>
-              )}
-            </div>
+              <Calendar size={14} />
+              Agendar boda
+            </button>
+            {showDropdown && (
+              <div className="calendar-options-dropdown" style={{ bottom: '110%', left: '50%', transform: 'translateX(-50%)', top: 'auto', marginBottom: '0.5rem', width: '200px' }}>
+                <a 
+                  href={getGoogleCalendarUrl()} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="calendar-option-btn"
+                  onClick={() => setShowDropdown(false)}
+                >
+                  Google Calendar
+                </a>
+                <a 
+                  href={getOutlookCalendarUrl()} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="calendar-option-btn"
+                  onClick={() => setShowDropdown(false)}
+                >
+                  Outlook Web
+                </a>
+                <button 
+                  type="button" 
+                  onClick={downloadICS} 
+                  className="calendar-option-btn"
+                >
+                  Descargar archivo .ics
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Separator */}
+      <div className="design-separator">
+        <Heart size={10} className="design-separator-heart" fill="currentColor" strokeWidth={0} />
+      </div>
+
+      {/* 3. Timeline / Itinerary section with Watercolor wash */}
+      <div style={{ position: 'relative', overflow: 'hidden', padding: '2rem 1.5rem', margin: '2rem 0', borderRadius: '12px', border: '1px solid rgba(131, 155, 122, 0.15)' }}>
+        
+        {/* Soft Sage Green Watercolor Wash stain */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'radial-gradient(circle at 60% 50%, rgba(131, 155, 122, 0.18) 0%, rgba(131, 155, 122, 0.06) 65%, rgba(0,0,0,0) 100%)',
+          pointerEvents: 'none',
+          zIndex: 0
+        }} />
+
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--color-text-muted)', fontWeight: 600, display: 'block', textAlign: 'center', marginBottom: '0.25rem' }}>Cronograma</span>
+          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', color: 'var(--color-olive-dark)', textTransform: 'uppercase', letterSpacing: '0.1em', textAlign: 'center', marginBottom: '2rem' }}>Itinerario del Día</h3>
+
+          <div className="timeline-list">
+            {timelineEvents.map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <div className="timeline-event-item" key={idx}>
+                  <div className="timeline-event-icon-circle">
+                    <Icon size={12} strokeWidth={2} />
+                  </div>
+                  <span className="timeline-event-time">{item.time}</span>
+                  <span className="timeline-event-desc">{item.desc}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
     </section>
   );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shirt } from 'lucide-react';
+import { Shirt, Heart, AlertCircle } from 'lucide-react';
 
 export default function DressCode({ config }) {
   const evento = config?.evento || {};
@@ -10,55 +10,102 @@ export default function DressCode({ config }) {
   const dressCodeNota = evento.dress_code_nota || 'No es necesario utilizar los colores de la invitación. Solo te pedimos evitar blanco y bordo.';
 
   return (
-    <section id="dress-code">
-      {/* Decorative hanger/shirt icon */}
-      <div style={{ color: 'var(--color-gold)', display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
-        <Shirt size={32} strokeWidth={1.5} />
+    <section id="dress-code" style={{ padding: '2rem 1.5rem', textAlign: 'center' }}>
+      
+      {/* Hanger icon */}
+      <div style={{ color: 'var(--color-gold)', display: 'flex', justifyContent: 'center', marginBottom: '0.5rem' }}>
+        <Shirt size={28} strokeWidth={1.5} />
       </div>
 
-      <h2 className="section-title">Código de Vestimenta</h2>
-      <p className="section-subtitle">Dress Code</p>
+      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--color-text-muted)', fontWeight: 600, display: 'block', marginBottom: '0.25rem' }}>Dress Code</span>
+      <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', color: 'var(--color-text-dark)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0.35rem 0' }}>Código de Vestimenta</h3>
+      
+      <div style={{ margin: '1.5rem 0' }}>
+        <span style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', fontWeight: 300, color: 'var(--color-olive-dark)', display: 'block', marginBottom: '0.75rem' }}>{dressCodeTipo}</span>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.85rem', color: 'var(--color-text-muted)', lineHeight: '1.6', maxWidth: '90%', margin: '0 auto 1.5rem auto' }}>
+          {dressCodeTexto}
+        </p>
 
-      <div className="arch-card-wrapper">
-        <div className="arch-card animate-fade-in-up">
-          <span className="dress-code-value">{dressCodeTipo}</span>
-          
-          <p className="dress-code-text" style={{ marginBottom: '1.5rem' }}>{dressCodeTexto}</p>
-          
-          <div 
-            style={{ 
-              backgroundColor: 'var(--bg-crema-alt)', 
-              border: '1px solid var(--color-border)', 
-              borderRadius: 'var(--radius-md)', 
-              padding: '1.5rem 1rem',
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              zIndex: 2
-            }}
-          >
-            <span className="colors-reserved-title">Colores Reservados</span>
-            <p style={{ fontSize: '0.85rem', color: 'var(--color-text-dark)', marginBottom: '1.5rem', lineHeight: '1.5' }}>
-              {dressCodeColores}
-            </p>
+        {/* Forbidden colors card */}
+        <div 
+          style={{ 
+            backgroundColor: '#faf8f5', 
+            border: '1px solid rgba(197, 160, 89, 0.2)', 
+            borderRadius: '8px', 
+            padding: '1.5rem 1rem',
+            margin: '0 auto',
+            maxWidth: '90%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }}
+        >
+          <span style={{ fontFamily: 'var(--font-serif)', fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--color-gold)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '0.5rem' }}>Colores Reservados</span>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '1.25rem', lineHeight: '1.5' }}>
+            {dressCodeColores}
+          </p>
 
-            <div className="forbidden-colors" style={{ marginBottom: '1rem' }}>
-              <div className="forbidden-color-wrapper">
-                <div className="color-circle white" title="Blanco Reservado"></div>
-                <span className="forbidden-color-label">Blanco</span>
-              </div>
-              
-              <div className="forbidden-color-wrapper">
-                <div className="color-circle bordo" title="Bordo Reservado"></div>
-                <span className="forbidden-color-label">Bordo</span>
-              </div>
+          <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', marginBottom: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
+              <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#ffffff', border: '1px solid #dcd6cd', boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.05)' }}></div>
+              <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-sans)', color: 'var(--color-text-muted)' }}>Blanco</span>
             </div>
-
-            <p className="dress-code-note" style={{ fontSize: '0.75rem' }}>{dressCodeNota}</p>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
+              <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#701c24', boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1)' }}></div>
+              <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-sans)', color: 'var(--color-text-muted)' }}>Bordo</span>
+            </div>
           </div>
+
+          <p style={{ fontSize: '0.75rem', fontFamily: 'var(--font-sans)', color: 'var(--color-text-muted)', fontStyle: 'italic', lineHeight: '1.4' }}>
+            {dressCodeNota}
+          </p>
         </div>
       </div>
+
+      {/* Separator */}
+      <div className="design-separator">
+        <Heart size={10} className="design-separator-heart" fill="currentColor" strokeWidth={0} />
+      </div>
+
+      {/* 4. Adults only card (inspired by reference image bottom half) */}
+      <div style={{ margin: '2rem auto 1rem auto', maxWidth: '85%' }}>
+        <div style={{ color: 'var(--color-gold)', display: 'flex', justifyContent: 'center', marginBottom: '0.75rem' }}>
+          <AlertCircle size={24} strokeWidth={1.5} />
+        </div>
+        <span style={{ 
+          fontFamily: 'var(--font-sans)', 
+          fontSize: '0.65rem', 
+          letterSpacing: '0.25em', 
+          textTransform: 'uppercase', 
+          color: 'var(--color-text-muted)', 
+          fontWeight: 600,
+          display: 'block',
+          marginBottom: '0.5rem'
+        }}>
+          Sólo Adultos, Por Favor
+        </span>
+        <p style={{ 
+          fontFamily: 'var(--font-serif)', 
+          fontSize: '0.82rem', 
+          color: 'var(--color-text-muted)', 
+          lineHeight: '1.5',
+          fontStyle: 'italic',
+          marginBottom: '1.25rem'
+        }}>
+          Esperamos que comprendan que nuestro día especial es una celebración exclusiva para adultos. Queremos que disfruten la noche al máximo.
+        </p>
+
+        {/* Small olive twig sketch decoration below text */}
+        <div style={{ color: 'var(--color-gold)', display: 'flex', justifyContent: 'center', opacity: 0.8 }}>
+          <svg width="40" height="12" viewBox="0 0 100 20" fill="none" stroke="currentColor" strokeWidth="1.2">
+            <path d="M20,10 Q50,15 80,10" />
+            <path d="M50,10 C50,10 47,6 45,8 C43,10 46,12 46,12 Z" fill="currentColor" opacity="0.4" />
+            <path d="M56,10 C56,10 59,6 61,8 C63,10 60,12 60,12 Z" fill="currentColor" opacity="0.4" />
+          </svg>
+        </div>
+      </div>
+
     </section>
   );
 }

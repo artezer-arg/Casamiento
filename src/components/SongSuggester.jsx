@@ -68,25 +68,29 @@ export default function SongSuggester({ config, onSubmit }) {
   if (!isVisible) return null;
 
   return (
-    <section id="canciones">
-      {/* Decorative leaf icon */}
-      <div style={{ color: 'var(--color-gold)', display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
-        <Music size={32} strokeWidth={1.5} />
+    <section id="canciones" style={{ padding: '2rem 1.5rem', textAlign: 'center' }}>
+      
+      {/* Music icon */}
+      <div style={{ color: 'var(--color-gold)', display: 'flex', justifyContent: 'center', marginBottom: '0.5rem' }}>
+        <Music size={28} strokeWidth={1.5} />
       </div>
 
-      <h2 className="section-title">La Música</h2>
-      <p className="section-subtitle">Sugerí tus canciones</p>
+      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--color-text-muted)', fontWeight: 600, display: 'block', marginBottom: '0.25rem' }}>La Música</span>
+      <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', color: 'var(--color-text-dark)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0.35rem 0' }}>Sugerir Canciones</h3>
 
-      <div className="arch-card-wrapper">
-        <div className="arch-card animate-fade-in-up">
-          <p style={{ fontSize: '0.95rem', color: 'var(--color-text-muted)', marginBottom: '1.5rem', lineHeight: '1.6' }}>
-            Queremos que la pista no pare. Contanos qué canción no puede faltar en nuestra fiesta para bailar toda la noche.
-          </p>
+      <div style={{ margin: '1.5rem auto', maxWidth: '90%' }}>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.85rem', color: 'var(--color-text-muted)', marginBottom: '1.5rem', lineHeight: '1.6' }}>
+          Queremos que la pista no pare. Contanos qué canción no puede faltar en nuestra fiesta para bailar toda la noche.
+        </p>
 
-          <button onClick={handleOpenForm} className="btn btn-primary" style={{ width: '100%' }}>
-            Sugerir una canción
-          </button>
-        </div>
+        <button 
+          onClick={handleOpenForm} 
+          className="design-btn-dark" 
+          style={{ width: '100%', justifyContent: 'center' }}
+        >
+          <Music size={14} />
+          Sugerir Canción
+        </button>
       </div>
 
       {/* Internal Form Modal */}

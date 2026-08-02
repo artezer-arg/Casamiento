@@ -62,7 +62,8 @@ export default function Invitation() {
   const displayNames = nombres.replace(' y ', ' & ');
 
   return (
-    <div className="public-invitation">
+    <div className="public-invitation-page-wrapper">
+      <div className="public-invitation">
       {/* 1. Welcome Screen overlay */}
       {!hasEntered && (
         <Welcome 
@@ -90,6 +91,28 @@ export default function Invitation() {
           {/* Mesa de Regalos */}
           <Gifts config={currentConfig} />
           
+          {/* Confirmación Asistencia (Inline RSVP) */}
+          <section id="confirmar-inline" style={{ padding: '2rem 1.5rem', textAlign: 'center' }}>
+            <div style={{ color: 'var(--color-gold)', display: 'flex', justifyContent: 'center', marginBottom: '0.5rem' }}>
+              <Heart size={28} strokeWidth={1.5} />
+            </div>
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--color-text-muted)', fontWeight: 600, display: 'block', marginBottom: '0.25rem' }}>R.S.V.P</span>
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', color: 'var(--color-text-dark)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0.35rem 0' }}>Confirmación</h3>
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.85rem', color: 'var(--color-text-muted)', marginBottom: '1.5rem', lineHeight: '1.6', maxWidth: '80%', margin: '0.5rem auto 1.5rem auto' }}>
+              Agradecemos confirmar tu asistencia antes del 24 de Octubre de 2026 para una mejor organización de la fiesta.
+            </p>
+            <button 
+              onClick={() => setIsRSVPOpen(true)}
+              className="design-btn-dark"
+              style={{ width: '90%', justifyContent: 'center', padding: '0.85rem 2rem' }}
+            >
+              Confirmar Asistencia
+            </button>
+            <div className="design-separator">
+              <Heart size={10} className="design-separator-heart" fill="currentColor" strokeWidth={0} />
+            </div>
+          </section>
+
           {/* Sugerir canciones */}
           <SongSuggester config={currentConfig} onSubmit={submitSong} />
           
@@ -119,6 +142,7 @@ export default function Invitation() {
         config={currentConfig.musica} 
         shouldPlay={playMusic} 
       />
+      </div>
     </div>
   );
 }

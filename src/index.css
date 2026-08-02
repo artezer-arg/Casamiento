@@ -2294,3 +2294,213 @@ section:last-of-type::after {
   margin-top: 0.5rem;
 }
 
+/* =============================================================
+   ESTILOS DE REDISEÑO - EUCALIPTO Y ACUARELA (REFERENCIA)
+   ============================================================= */
+
+.public-invitation-page-wrapper {
+  background-color: #d1cbc0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  padding: 1.5rem 0;
+}
+
+@media (max-width: 480px) {
+  .public-invitation-page-wrapper {
+    padding: 0;
+  }
+}
+
+/* Page Card Shadow and Texture */
+.public-invitation {
+  width: 100%;
+  max-width: 480px;
+  background-color: #f6f3eb !important;
+  box-shadow: 0 15px 45px rgba(42, 51, 36, 0.18) !important;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+@media (max-width: 480px) {
+  .public-invitation {
+    border-radius: 0;
+  }
+}
+
+/* Leaf branch corners */
+.watercolor-branch-top-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: auto;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.85;
+}
+
+.watercolor-branch-bottom-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 150px;
+  height: auto;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.85;
+}
+
+/* Torn edges for images */
+.torn-image-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.torn-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Cursive Names Stacking */
+.names-cursive-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.5rem 0;
+  position: relative;
+  width: 100%;
+}
+
+.names-cursive-title {
+  font-family: var(--font-script);
+  font-size: 5rem;
+  color: var(--color-olive-dark);
+  line-height: 0.8;
+  margin: 0;
+  font-weight: normal;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.01);
+}
+
+.names-cursive-ampersand {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  color: var(--color-gold);
+  margin: 0.5rem 0;
+  font-style: italic;
+}
+
+/* Separators matching design */
+.design-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  margin: 2rem auto;
+  position: relative;
+}
+
+.design-separator::before,
+.design-separator::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px dotted var(--color-gold);
+  opacity: 0.6;
+}
+
+.design-separator-heart {
+  color: var(--color-gold);
+  margin: 0 0.75rem;
+  font-size: 0.7rem;
+}
+
+/* Custom buttons */
+.design-btn-dark {
+  background-color: #2a3324;
+  color: #ffffff;
+  border: none;
+  padding: 0.7rem 2rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(42, 51, 36, 0.15);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.design-btn-dark:hover {
+  background-color: var(--color-gold);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(197, 160, 89, 0.25);
+}
+
+/* Itinerary Timeline list */
+.timeline-list {
+  position: relative;
+  padding-left: 2rem;
+  margin: 1.5rem 0;
+  z-index: 1;
+}
+
+.timeline-list::before {
+  content: "";
+  position: absolute;
+  left: 0.75rem;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 1px;
+  border-left: 1px dotted var(--color-olive);
+  opacity: 0.5;
+}
+
+.timeline-event-item {
+  position: relative;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.timeline-event-icon-circle {
+  position: absolute;
+  left: -2rem;
+  top: 0.25rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--color-olive);
+  background-color: #f6f3eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-olive);
+  z-index: 2;
+}
+
+.timeline-event-time {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  color: var(--color-gold);
+  min-width: 75px;
+}
+
+.timeline-event-desc {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--color-text-dark);
+}
+

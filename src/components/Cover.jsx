@@ -1,7 +1,49 @@
 import React, { useState, useEffect } from 'react';
+import { Heart } from 'lucide-react';
+
+// Custom SVG components for the watercolor olive/eucalyptus look
+const WatercolorBranchTopRight = () => (
+  <svg className="watercolor-branch-top-right" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M120 0C95 12 70 32 50 62C40 77 35 92 30 112" stroke="#4a5d3b" strokeWidth="0.8" strokeLinecap="round"/>
+    <path d="M100 12C95 6 86 10 90 18C94 26 103 22 99 14Z" fill="#839b7a" fillOpacity="0.3" stroke="#4a5d3b" strokeWidth="0.4"/>
+    <path d="M85 24C78 19 72 25 78 32C84 39 90 33 86 26Z" fill="#839b7a" fillOpacity="0.25" stroke="#4a5d3b" strokeWidth="0.4"/>
+    <path d="M70 40C64 34 56 38 60 46C64 54 72 50 68 42Z" fill="#839b7a" fillOpacity="0.3" stroke="#4a5d3b" strokeWidth="0.4"/>
+    <path d="M55 58C48 52 42 56 46 64C50 72 58 68 54 60Z" fill="#839b7a" fillOpacity="0.2" stroke="#4a5d3b" strokeWidth="0.4"/>
+    <path d="M42 78C36 72 30 76 34 84C38 92 46 88 42 80Z" fill="#839b7a" fillOpacity="0.35" stroke="#4a5d3b" strokeWidth="0.4"/>
+    <path d="M106 5C98 3 94 11 100 16C106 21 110 13 104 7Z" fill="#839b7a" fillOpacity="0.25" stroke="#4a5d3b" strokeWidth="0.4"/>
+    <path d="M92 15C84 13 80 21 86 26C92 31 96 23 90 17Z" fill="#839b7a" fillOpacity="0.3" stroke="#4a5d3b" strokeWidth="0.4"/>
+    <path d="M78 28C70 26 66 34 72 39C78 44 82 36 76 30Z" fill="#839b7a" fillOpacity="0.2" stroke="#4a5d3b" strokeWidth="0.4"/>
+    <path d="M64 45C56 43 52 51 58 56C64 61 68 53 62 47Z" fill="#839b7a" fillOpacity="0.3" stroke="#4a5d3b" strokeWidth="0.4"/>
+  </svg>
+);
+
+const WatercolorBranchBottomLeft = () => (
+  <svg className="watercolor-branch-bottom-left" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 120C25 108 50 88 70 58C80 43 85 28 90 8" stroke="#4a5d3b" strokeWidth="0.8" strokeLinecap="round"/>
+    <path d="M20 108C25 114 34 110 30 102C26 94 17 98 21 106Z" fill="#839b7a" fillOpacity="0.3" stroke="#4a5d3b" strokeWidth="0.4"/>
+    <path d="M35 96C42 101 48 95 42 88C36 81 30 87 34 94Z" fill="#839b7a" fillOpacity="0.25" stroke="#4a5d3b" strokeWidth="0.4"/>
+    <path d="M50 80C56 86 64 82 60 74C56 66 48 70 52 78Z" fill="#839b7a" fillOpacity="0.3" stroke="#4a5d3b" strokeWidth="0.4"/>
+    <path d="M65 62C72 68 78 64 74 56C70 48 62 52 66 60Z" fill="#839b7a" fillOpacity="0.2" stroke="#4a5d3b" strokeWidth="0.4"/>
+    <path d="M14 115C22 117 26 109 20 104C14 99 10 107 16 113Z" fill="#839b7a" fillOpacity="0.25" stroke="#4a5d3b" strokeWidth="0.4"/>
+    <path d="M28 105C36 107 40 99 34 94C28 89 24 97 30 103Z" fill="#839b7a" fillOpacity="0.3" stroke="#4a5d3b" strokeWidth="0.4"/>
+    <path d="M42 92C50 94 54 86 48 81C42 76 38 84 44 90Z" fill="#839b7a" fillOpacity="0.2" stroke="#4a5d3b" strokeWidth="0.4"/>
+  </svg>
+);
+
+// SVG paper torn edges for images
+const TornEdgeTop = () => (
+  <svg viewBox="0 0 100 8" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '16px', zIndex: 3, transform: 'scaleY(-1)' }}>
+    <path d="M0,0 Q2,2 5,1 T10,2 Q13,0 16,3 T22,1 Q25,3 29,1 T35,2 Q38,0 42,3 T48,1 Q52,3 56,1 T62,2 Q65,0 69,3 T75,1 Q79,3 83,1 T89,2 Q92,0 96,3 T100,0 L100,8 L0,8 Z" fill="#f6f3eb" />
+  </svg>
+);
+
+const TornEdgeBottom = () => (
+  <svg viewBox="0 0 100 8" preserveAspectRatio="none" style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '16px', zIndex: 3 }}>
+    <path d="M0,0 Q2,2 5,1 T10,2 Q13,0 16,3 T22,1 Q25,3 29,1 T35,2 Q38,0 42,3 T48,1 Q52,3 56,1 T62,2 Q65,0 69,3 T75,1 Q79,3 83,1 T89,2 Q92,0 96,3 T100,0 L100,8 L0,8 Z" fill="#f6f3eb" />
+  </svg>
+);
 
 export default function Cover({ config, photos }) {
-  const nombres = config?.general?.nombres_novios || 'Nestor y Pame';
   const lugar = config?.evento?.lugar || 'Las Moras Eventos';
   const direccion = config?.evento?.direccion || 'Mateo Blanco 369, Campana';
 
@@ -52,165 +94,154 @@ export default function Cover({ config, photos }) {
   }, [fecha, horario]);
 
   return (
-    <div 
-      className="cover-container" 
-      style={{ 
-        backgroundImage: `url(${coverUrl})`,
-        backgroundPosition: alignment,
-        justifyContent: 'center',
-        padding: '2rem 1rem',
-        overflow: 'hidden'
-      }}
-    >
-      <div className="cover-overlay" style={{ background: 'linear-gradient(to bottom, rgba(42, 51, 36, 0.3) 0%, rgba(42, 51, 36, 0.6) 100%)' }}></div>
+    <div style={{ position: 'relative', width: '100%', padding: '3.5rem 1.5rem 2.5rem 1.5rem', textAlign: 'center', zIndex: 1 }}>
       
-      <div className="arch-card-wrapper animate-fade-in-up">
-        {/* The arched card inspired by reference image */}
-        <div className="arch-card torn-left">
-          
-          {/* Jagged Torn Paper SVG Edge */}
-          <svg className="torn-edge-svg" viewBox="0 0 10 100" preserveAspectRatio="none">
-            <path 
-              d="M 10,0 
-                 L 4,3 L 8,6 L 3,10 L 7,13 L 2,17 L 9,21 L 4,25 L 8,29 L 3,33 L 7,37 L 2,41 L 8,45 L 4,49 L 7,53 L 3,57 L 8,61 L 4,65 L 7,69 L 3,73 L 8,77 L 2,81 L 8,85 L 3,89 L 7,93 L 2,97 L 10,100 Z" 
-              fill="#faf7f1" 
-            />
-          </svg>
+      {/* Decorative leaf branch corner framing */}
+      <WatercolorBranchTopRight />
 
-          {/* Interactive 3D Gold Wax Seal pinned to the torn seam */}
-          <div className="wax-seal" title="Lacre de Confirmación Nestor & Pame">
-            <span className="wax-seal-logo">N|P</span>
-          </div>
+      {/* Intro Quote */}
+      <p style={{
+        fontFamily: 'var(--font-serif)',
+        fontSize: '0.85rem',
+        lineHeight: '1.5',
+        color: 'var(--color-text-muted)',
+        fontStyle: 'italic',
+        maxWidth: '80%',
+        margin: '0 auto 2.5rem auto'
+      }}>
+        "Tres cosas durarán para siempre: la fe, la esperanza y el amor; y la mayor de las tres es el amor."
+        <span style={{ display: 'block', fontSize: '0.7rem', marginTop: '0.4rem', letterSpacing: '0.1em' }}>1 CORINTIOS 13:13</span>
+      </p>
 
-          {/* Delicate leaf branch overlay on the right side */}
-          <svg className="floating-side-branch" viewBox="0 0 50 100" fill="currentColor">
-            <path d="M10,90 Q15,45 35,10" fill="none" stroke="currentColor" strokeWidth="1" />
-            {/* Leaves along the branch */}
-            <path d="M15,80 C18,75 12,70 15,65 C18,60 22,65 20,75 Z" />
-            <path d="M18,65 C22,60 16,55 19,50 C22,45 26,50 24,60 Z" />
-            <path d="M22,50 C26,45 20,40 23,35 C26,30 30,35 28,45 Z" />
-            <path d="M26,35 C30,30 24,25 27,20 C30,15 34,20 32,30 Z" />
-            <path d="M30,20 C34,15 28,10 31,5 C34,0 38,5 36,15 Z" />
-            {/* Left facing leaves */}
-            <path d="M12,75 C9,70 15,65 12,60 C9,55 5,60 7,70 Z" />
-            <path d="M14,60 C11,55 17,50 14,45 C11,40 7,45 9,55 Z" />
-            <path d="M16,45 C13,40 19,35 16,30 C13,25 9,30 11,40 Z" />
-            <path d="M18,30 C15,25 21,20 18,15 C15,10 11,15 13,25 Z" />
-          </svg>
+      {/* Top Monogram */}
+      <div style={{ color: 'var(--color-gold)', display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '0.5rem' }}>
+        <span style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', letterSpacing: '0.05em', color: 'var(--color-text-dark)', fontWeight: 300 }}>N | P</span>
+        <span style={{ fontSize: '0.65rem', letterSpacing: '0.25em', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase', marginTop: '0.25rem' }}>Nuestro Casamiento</span>
+        <Heart size={8} fill="currentColor" strokeWidth={0} style={{ marginTop: '0.5rem', opacity: 0.6 }} />
+      </div>
 
-          {/* Top Wreath Monogram */}
-          <div style={{ color: 'var(--color-gold)', display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '0.75rem', zIndex: 2 }}>
-            <svg width="46" height="30" viewBox="0 0 100 50" fill="none" stroke="currentColor" strokeWidth="1.2">
-              <path d="M15,35 C20,15 45,10 50,22 C55,10 80,15 85,35" />
-              {/* Little leaves */}
-              <circle cx="25" cy="23" r="1.5" fill="currentColor" />
-              <circle cx="35" cy="16" r="1.5" fill="currentColor" />
-              <circle cx="45" cy="15" r="1.5" fill="currentColor" />
-              <circle cx="55" cy="15" r="1.5" fill="currentColor" />
-              <circle cx="65" cy="16" r="1.5" fill="currentColor" />
-              <circle cx="75" cy="23" r="1.5" fill="currentColor" />
-            </svg>
-            <span style={{ fontSize: '0.8rem', letterSpacing: '0.25em', color: 'var(--color-text-dark)', fontWeight: 500, marginTop: '-4px' }}>N | P</span>
-          </div>
+      {/* Main Cover Photo with Torn Edges */}
+      <div className="torn-image-container" style={{ height: '300px', margin: '2.5rem 0', boxShadow: '0 8px 25px rgba(42, 51, 36, 0.08)' }}>
+        <TornEdgeTop />
+        <img 
+          src={coverUrl} 
+          alt="Nestor y Pame" 
+          className="torn-image" 
+          style={{ objectPosition: alignment }}
+        />
+        <TornEdgeBottom />
+      </div>
 
-          {/* Section 1: SAVE THE DATE replaced in Spanish */}
-          <h2 className="ref-save-the-date">NUESTRA</h2>
-          <span className="script-text" style={{ fontSize: '1.8rem', marginTop: '-0.75rem', marginBottom: '-0.5rem', zIndex: 2 }}>bella</span>
-          <h2 className="ref-save-the-date" style={{ marginBottom: '0.5rem' }}>BODA</h2>
+      {/* Invitation intro text */}
+      <p style={{
+        fontFamily: 'var(--font-serif)',
+        fontSize: '0.88rem',
+        color: 'var(--color-text-dark)',
+        lineHeight: '1.6',
+        margin: '0 auto 2rem auto',
+        maxWidth: '90%'
+      }}>
+        Con gran alegría y corazones agradecidos, junto a nuestros padres, los invitamos a compartir la celebración de nuestro amor mientras nos unimos en matrimonio.
+      </p>
 
-          {/* Section 2: FOR THE WEDDING OF */}
-          <span className="ref-subheading">PARA EL CASAMIENTO DE</span>
-
-          {/* Section 3: NAMES */}
-          <h3 className="ref-names" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', flexWrap: 'wrap', width: '100%', margin: '0.5rem 0' }}>
-            <span>NESTOR</span>
-            <span className="script-text" style={{ fontSize: '2.4rem', margin: '0 0.1rem', transform: 'translateY(-4px)' }}>y</span>
-            <span>PAME</span>
-          </h3>
-
-          {/* Section 4: DATE GRID saturday | 24 | october */}
-          <div className="date-columns">
-            <span className="date-column-side">Sábado</span>
-            <span className="date-column-center">24</span>
-            <span className="date-column-side">Octubre</span>
-          </div>
-
-          {/* Section 5: DOS MIL VEINTISEIS */}
-          <span 
-            style={{ 
-              fontSize: '0.65rem', 
-              letterSpacing: '0.2em', 
-              textTransform: 'uppercase', 
-              color: 'var(--color-text-muted)',
-              fontWeight: 600,
-              marginBottom: '1rem'
-            }}
-          >
-            DOS MIL VEINTISÉIS
-          </span>
-
-          {/* Section 5b: Cover Countdown */}
-          {timeLeft ? (
-            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', marginBottom: '1.25rem', zIndex: 2 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '40px', padding: '0.35rem 0.5rem', border: '1px solid rgba(197, 160, 89, 0.25)', borderRadius: '4px', backgroundColor: '#faf7f1' }}>
-                <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--color-olive)', fontFamily: 'monospace' }}>{String(timeLeft.dias).padStart(2, '0')}</span>
-                <span style={{ fontSize: '0.55rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', marginTop: '1px', letterSpacing: '0.05em' }}>Días</span>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '40px', padding: '0.35rem 0.5rem', border: '1px solid rgba(197, 160, 89, 0.25)', borderRadius: '4px', backgroundColor: '#faf7f1' }}>
-                <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--color-olive)', fontFamily: 'monospace' }}>{String(timeLeft.horas).padStart(2, '0')}</span>
-                <span style={{ fontSize: '0.55rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', marginTop: '1px', letterSpacing: '0.05em' }}>Hs</span>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '40px', padding: '0.35rem 0.5rem', border: '1px solid rgba(197, 160, 89, 0.25)', borderRadius: '4px', backgroundColor: '#faf7f1' }}>
-                <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--color-olive)', fontFamily: 'monospace' }}>{String(timeLeft.minutos).padStart(2, '0')}</span>
-                <span style={{ fontSize: '0.55rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', marginTop: '1px', letterSpacing: '0.05em' }}>Min</span>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '40px', padding: '0.35rem 0.5rem', border: '1px solid rgba(197, 160, 89, 0.25)', borderRadius: '4px', backgroundColor: '#faf7f1' }}>
-                <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--color-olive)', fontFamily: 'monospace' }}>{String(timeLeft.segundos).padStart(2, '0')}</span>
-                <span style={{ fontSize: '0.55rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', marginTop: '1px', letterSpacing: '0.05em' }}>Seg</span>
-              </div>
-            </div>
-          ) : (
-            <div style={{ fontSize: '0.85rem', color: 'var(--color-gold)', fontWeight: 600, marginBottom: '1.25rem', letterSpacing: '0.1em' }}>
-              ¡LLEGÓ NUESTRO GRAN DÍA! 💍
-            </div>
-          )}
-
-          {/* Section 6: CALLIGRAPHY FOOTER */}
-          <span className="script-text" style={{ fontSize: '1.6rem', color: 'var(--color-gold)', marginBottom: '1.25rem' }}>
-            Invitación formal a continuación
-          </span>
-
-          {/* Section 7: LOCATION */}
-          <span className="ref-location">{getLocationText()}</span>
-
-          {/* Section 8: CLASSIC VILLA ENGRAVING */}
-          <svg className="line-art-villa" viewBox="0 0 120 40" fill="none" stroke="currentColor" strokeWidth="0.6">
-            {/* Ground line */}
-            <line x1="10" y1="36" x2="110" y2="36" />
-            {/* Villa central building */}
-            <rect x="48" y="16" width="24" height="20" />
-            <polygon points="46,16 60,8 74,16" />
-            <rect x="56" y="26" width="8" height="10" /> {/* Door */}
-            {/* Left wing */}
-            <rect x="28" y="22" width="20" height="14" />
-            <polygon points="26,22 38,16 50,22" />
-            {/* Right wing */}
-            <rect x="72" y="22" width="20" height="14" />
-            <polygon points="70,22 82,16 94,22" />
-            {/* Windows details */}
-            <circle cx="60" cy="12" r="1.5" />
-            <rect x="34" y="26" width="3" height="5" />
-            <rect x="41" y="26" width="3" height="5" />
-            <rect x="76" y="26" width="3" height="5" />
-            <rect x="83" y="26" width="3" height="5" />
-            {/* Little trees on the sides */}
-            <path d="M18,36 L18,22 C18,22 15,24 15,28 C15,32 18,36 18,36 Z" fill="currentColor" opacity="0.3" />
-            <path d="M22,36 L22,18 C22,18 19,21 19,26 C19,31 22,36 22,36 Z" fill="currentColor" opacity="0.3" />
-            <path d="M102,36 L102,22 C102,22 99,24 99,28 C99,32 102,36 102,36 Z" fill="currentColor" opacity="0.3" />
-            <path d="M98,36 L98,18 C98,18 95,21 95,26 C95,31 98,36 98,36 Z" fill="currentColor" opacity="0.3" />
-          </svg>
+      {/* Parents Columns */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', margin: '0.5rem 0 2.5rem 0', borderTop: '1px dotted rgba(197, 160, 89, 0.4)', borderBottom: '1px dotted rgba(197, 160, 89, 0.4)', padding: '1rem 0' }}>
+        <div style={{ textAlign: 'center', borderRight: '1px solid rgba(197, 160, 89, 0.2)' }}>
+          <span style={{ fontFamily: 'var(--font-serif)', fontSize: '0.7rem', letterSpacing: '0.1em', fontWeight: 'bold', color: 'var(--color-gold)', textTransform: 'uppercase', display: 'block', marginBottom: '0.35rem' }}>Padres del Novio</span>
+          <span style={{ fontFamily: 'var(--font-serif)', fontSize: '0.8rem', color: 'var(--color-text-dark)' }}>Familia de Nestor</span>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <span style={{ fontFamily: 'var(--font-serif)', fontSize: '0.7rem', letterSpacing: '0.1em', fontWeight: 'bold', color: 'var(--color-gold)', textTransform: 'uppercase', display: 'block', marginBottom: '0.35rem' }}>Padres de la Novia</span>
+          <span style={{ fontFamily: 'var(--font-serif)', fontSize: '0.8rem', color: 'var(--color-text-dark)' }}>Familia de Pame</span>
         </div>
       </div>
+
+      {/* Stacked script Names (Rafaela & Josue styling) */}
+      <div className="names-cursive-container">
+        <h1 className="names-cursive-title">Nestor</h1>
+        <span className="names-cursive-ampersand">&</span>
+        <h1 className="names-cursive-title">Pame</h1>
+      </div>
+
+      <p style={{
+        fontFamily: 'var(--font-sans)',
+        fontSize: '0.65rem',
+        letterSpacing: '0.25em',
+        color: 'var(--color-text-muted)',
+        fontWeight: 600,
+        textTransform: 'uppercase',
+        margin: '1.5rem 0 2.5rem 0'
+      }}>
+        Tenemos el honor de invitarlos a nuestra boda
+      </p>
+
+      {/* Classic Date grid */}
+      <div className="date-columns" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', alignItems: 'center', maxWidth: '300px', margin: '0 auto 0.5rem auto' }}>
+        <span style={{ fontFamily: 'var(--font-serif)', fontSize: '0.9rem', textTransform: 'uppercase', color: 'var(--color-text-dark)', letterSpacing: '0.1em', borderRight: '1px solid var(--color-gold)', paddingRight: '0.5rem', textAlign: 'right' }}>Sábado</span>
+        <span style={{ fontFamily: 'var(--font-serif)', fontSize: '2.8rem', fontWeight: 300, color: 'var(--color-olive-dark)', lineHeight: '1', padding: '0 0.5rem', textAlign: 'center' }}>24</span>
+        <span style={{ fontFamily: 'var(--font-serif)', fontSize: '0.9rem', textTransform: 'uppercase', color: 'var(--color-text-dark)', letterSpacing: '0.1em', borderLeft: '1px solid var(--color-gold)', paddingLeft: '0.5rem', textAlign: 'left' }}>Octubre</span>
+      </div>
+
+      <span style={{ 
+        fontFamily: 'var(--font-sans)',
+        fontSize: '0.65rem', 
+        letterSpacing: '0.25em', 
+        textTransform: 'uppercase', 
+        color: 'var(--color-text-muted)',
+        fontWeight: 600,
+        display: 'block',
+        marginBottom: '2rem'
+      }}>
+        DOS MIL VEINTISÉIS
+      </span>
+
+      {/* Cover Countdown */}
+      {timeLeft ? (
+        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', marginBottom: '2.5rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '45px', padding: '0.4rem 0.5rem', border: '1px solid rgba(197, 160, 89, 0.2)', borderRadius: '4px', backgroundColor: '#faf7f1' }}>
+            <span style={{ fontSize: '0.9rem', fontWeight: 'bold', color: 'var(--color-olive)', fontFamily: 'monospace' }}>{String(timeLeft.dias).padStart(2, '0')}</span>
+            <span style={{ fontSize: '0.55rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', marginTop: '1px' }}>Días</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '45px', padding: '0.4rem 0.5rem', border: '1px solid rgba(197, 160, 89, 0.2)', borderRadius: '4px', backgroundColor: '#faf7f1' }}>
+            <span style={{ fontSize: '0.9rem', fontWeight: 'bold', color: 'var(--color-olive)', fontFamily: 'monospace' }}>{String(timeLeft.horas).padStart(2, '0')}</span>
+            <span style={{ fontSize: '0.55rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', marginTop: '1px' }}>Hs</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '45px', padding: '0.4rem 0.5rem', border: '1px solid rgba(197, 160, 89, 0.2)', borderRadius: '4px', backgroundColor: '#faf7f1' }}>
+            <span style={{ fontSize: '0.9rem', fontWeight: 'bold', color: 'var(--color-olive)', fontFamily: 'monospace' }}>{String(timeLeft.minutos).padStart(2, '0')}</span>
+            <span style={{ fontSize: '0.55rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', marginTop: '1px' }}>Min</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '45px', padding: '0.4rem 0.5rem', border: '1px solid rgba(197, 160, 89, 0.2)', borderRadius: '4px', backgroundColor: '#faf7f1' }}>
+            <span style={{ fontSize: '0.9rem', fontWeight: 'bold', color: 'var(--color-olive)', fontFamily: 'monospace' }}>{String(timeLeft.segundos).padStart(2, '0')}</span>
+            <span style={{ fontSize: '0.55rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', marginTop: '1px' }}>Seg</span>
+          </div>
+        </div>
+      ) : (
+        <div style={{ fontSize: '0.85rem', color: 'var(--color-gold)', fontWeight: 600, marginBottom: '2.5rem', letterSpacing: '0.15em' }}>
+          ¡LLEGÓ NUESTRO GRAN DÍA! 💍
+        </div>
+      )}
+
+      {/* Calligraphy branch ornament at the bottom of page 1 */}
+      <div style={{ color: 'var(--color-gold)', display: 'flex', justifyContent: 'center', marginTop: '1.5rem', marginBottom: '2rem' }}>
+        <svg width="60" height="15" viewBox="0 0 100 20" fill="none" stroke="currentColor" strokeWidth="1.2">
+          <path d="M10,10 Q50,15 90,10" />
+          <path d="M50,10 C50,10 45,5 42,7 C39,9 43,12 43,12 Z" fill="currentColor" opacity="0.4" />
+          <path d="M58,10 C58,10 63,5 66,7 C69,9 65,12 65,12 Z" fill="currentColor" opacity="0.4" />
+          <path d="M30,10 C30,10 25,6 23,8 C21,10 24,12 24,12 Z" fill="currentColor" opacity="0.4" />
+          <path d="M70,10 C70,10 75,6 77,8 C79,10 76,12 76,12 Z" fill="currentColor" opacity="0.4" />
+        </svg>
+      </div>
+
+      <span style={{
+        fontFamily: 'var(--font-serif)',
+        fontSize: '0.75rem',
+        letterSpacing: '0.15em',
+        textTransform: 'uppercase',
+        color: 'var(--color-gold)',
+        display: 'block'
+      }}>
+        {getLocationText()}
+      </span>
     </div>
   );
 }

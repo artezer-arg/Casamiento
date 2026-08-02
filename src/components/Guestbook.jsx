@@ -74,25 +74,23 @@ export default function Guestbook() {
   };
 
   return (
-    <section id="libro-firmas" className="details-container" style={{ backgroundColor: 'var(--bg-crema)', padding: '5rem 1.5rem' }}>
+    <section id="libro-firmas" style={{ padding: '3rem 1.5rem', textAlign: 'center' }}>
       
-      {/* Decorative Wreath */}
-      <div style={{ color: 'var(--color-gold)', display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
-        <Heart size={32} fill="currentColor" strokeWidth={1} style={{ opacity: 0.8 }} />
+      {/* Heart icon */}
+      <div style={{ color: 'var(--color-gold)', display: 'flex', justifyContent: 'center', marginBottom: '0.5rem' }}>
+        <Heart size={28} strokeWidth={1.5} />
       </div>
 
-      <h2 className="section-title">Libro de Firmas</h2>
-      <p className="section-subtitle" style={{ marginBottom: '3rem' }}>
-        Dejanos tus buenos deseos y dedicatorias
-      </p>
+      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--color-text-muted)', fontWeight: 600, display: 'block', marginBottom: '0.25rem' }}>Libro de Firmas</span>
+      <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', color: 'var(--color-text-dark)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0.35rem 0' }}>Dejanos tus Buenos Deseos</h3>
 
-      <div className="details-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2.5rem', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', maxWidth: '440px', margin: '1.5rem auto' }}>
         
         {/* Write message Card */}
-        <div className="details-card" style={{ padding: '2.5rem 2rem', border: '1px solid rgba(197, 160, 89, 0.3)', borderRadius: '12px', background: 'var(--bg-crema-alt)' }}>
-          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--color-olive)', marginBottom: '1.5rem', textAlign: 'center' }}>
+        <div style={{ padding: '1.5rem 1.25rem', border: '1px solid rgba(197, 160, 89, 0.2)', borderRadius: '8px', background: '#faf8f5' }}>
+          <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.1rem', color: 'var(--color-olive-dark)', marginBottom: '1.25rem', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             Escribir dedicatoria
-          </h3>
+          </h4>
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             {error && (
@@ -138,18 +136,18 @@ export default function Guestbook() {
 
             <button 
               type="submit" 
-              className="btn btn-primary" 
+              className="design-btn-dark" 
               disabled={submitting}
-              style={{ width: '100%', padding: '1rem', display: 'flex', gap: '0.5rem', justifyContent: 'center', alignItems: 'center' }}
+              style={{ width: '100%', justifyContent: 'center' }}
             >
               {submitting ? (
                 <>
-                  <Loader size={18} className="animate-spin-slow" />
+                  <Loader size={14} className="animate-spin-slow" />
                   Guardando...
                 </>
               ) : (
                 <>
-                  <MessageSquare size={18} />
+                  <MessageSquare size={14} />
                   Enviar dedicatoria
                 </>
               )}
@@ -159,9 +157,9 @@ export default function Guestbook() {
 
         {/* Read messages List */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%' }}>
-          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--color-olive)', marginBottom: '0.5rem', textAlign: 'center' }}>
+          <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.1rem', color: 'var(--color-olive-dark)', marginBottom: '0.5rem', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             Mensajes de los invitados
-          </h3>
+          </h4>
 
           {loading ? (
             <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
