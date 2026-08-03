@@ -2343,6 +2343,17 @@ section:last-of-type::after {
   transform: scaleX(-1);
 }
 
+.watercolor-branch-top-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 160px;
+  height: 160px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.95;
+}
+
 .watercolor-branch-bottom-left {
   position: absolute;
   bottom: 0;
@@ -2353,6 +2364,31 @@ section:last-of-type::after {
   z-index: 0;
   opacity: 0.95;
   transform: scaleY(-1) rotate(90deg);
+}
+
+/* Eucalyptus Side branches framing the names */
+.names-branch-left {
+  position: absolute;
+  left: -25px;
+  top: 50%;
+  transform: translateY(-50%) rotate(40deg);
+  width: 120px;
+  height: 120px;
+  pointer-events: none;
+  opacity: 0.85;
+  z-index: 0;
+}
+
+.names-branch-right {
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-140deg) scaleX(-1);
+  width: 120px;
+  height: 120px;
+  pointer-events: none;
+  opacity: 0.85;
+  z-index: 0;
 }
 
 /* Torn edges for images */

@@ -17,6 +17,24 @@ const TornEdgeBottom = () => (
   </svg>
 );
 
+export const SymmetricalTwig = ({ style }) => (
+  <div style={{ display: 'flex', justifyContent: 'center', margin: '1rem 0', ...style }}>
+    <svg width="120" height="20" viewBox="0 0 100 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ opacity: 0.85 }}>
+      <path d="M50,12 C48,9 45,9 45,11 C45,13 50,16 50,16 C50,16 55,13 55,11 C55,9 52,9 50,12 Z" fill="var(--color-gold)" />
+      
+      <path d="M43,12 C30,12 20,9 10,12" stroke="#4a5d3b" strokeWidth="0.8" strokeLinecap="round" />
+      <path d="M35,11 C31,8 29,11 31,14 C33,17 37,14 35,11 Z" fill="#839b7a" fillOpacity="0.4" stroke="#4a5d3b" strokeWidth="0.4" />
+      <path d="M25,11 C21,8 19,11 21,14 C23,17 27,14 25,11 Z" fill="#839b7a" fillOpacity="0.4" stroke="#4a5d3b" strokeWidth="0.4" />
+      <path d="M15,12 C12,9 10,11 11,13 C12,15 15,14 15,12 Z" fill="#839b7a" fillOpacity="0.4" stroke="#4a5d3b" strokeWidth="0.4" />
+      
+      <path d="M57,12 C70,12 80,9 90,12" stroke="#4a5d3b" strokeWidth="0.8" strokeLinecap="round" />
+      <path d="M65,11 C69,8 71,11 69,14 C67,17 63,14 65,11 Z" fill="#839b7a" fillOpacity="0.4" stroke="#4a5d3b" strokeWidth="0.4" />
+      <path d="M75,11 C79,8 81,11 79,14 C77,17 73,14 75,11 Z" fill="#839b7a" fillOpacity="0.4" stroke="#4a5d3b" strokeWidth="0.4" />
+      <path d="M85,12 C88,9 90,11 89,13 C88,15 85,14 85,12 Z" fill="#839b7a" fillOpacity="0.4" stroke="#4a5d3b" strokeWidth="0.4" />
+    </svg>
+  </div>
+);
+
 export default function Cover({ config, photos }) {
   const lugar = config?.evento?.lugar || 'Las Moras Eventos';
   const direccion = config?.evento?.direccion || 'Mateo Blanco 369, Campana';
@@ -71,7 +89,7 @@ export default function Cover({ config, photos }) {
     <div style={{ position: 'relative', width: '100%', padding: '3.5rem 1.5rem 2.5rem 1.5rem', textAlign: 'center', zIndex: 1 }}>
       
       {/* Decorative leaf branch corner framing */}
-      <EucalyptusCorner className="watercolor-branch-top-right" />
+      <EucalyptusCorner className="watercolor-branch-top-left" />
       <EucalyptusCorner className="watercolor-branch-bottom-left" />
 
       {/* Intro Quote */}
@@ -131,8 +149,10 @@ export default function Cover({ config, photos }) {
         </div>
       </div>
 
-      {/* Stacked script Names (Rafaela & Josue styling) */}
+      {/* Stacked script Names (Rafaela & Josue styling) with side watercolor branches */}
       <div className="names-cursive-container">
+        <EucalyptusCorner className="names-branch-left" />
+        <EucalyptusCorner className="names-branch-right" />
         <h1 className="names-cursive-title">Nestor</h1>
         <span className="names-cursive-ampersand">&</span>
         <h1 className="names-cursive-title">Pame</h1>
@@ -170,6 +190,8 @@ export default function Cover({ config, photos }) {
         DOS MIL VEINTISÉIS
       </span>
 
+      <SymmetricalTwig style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }} />
+
       {/* Cover Countdown */}
       {timeLeft ? (
         <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', marginBottom: '2.5rem' }}>
@@ -196,40 +218,7 @@ export default function Cover({ config, photos }) {
         </div>
       )}
 
-      {/* Detailed eucalyptus leaf and flower branch ornament */}
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem', marginBottom: '2rem' }}>
-        <svg width="120" height="30" viewBox="0 0 100 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10,12 C35,16 65,16 90,12" stroke="#4a5d3b" strokeWidth="0.8" strokeLinecap="round" />
-          <path d="M22,13 C18,10 16,13 18,16 C20,19 24,16 22,13 Z" fill="#839b7a" fillOpacity="0.35" stroke="#4a5d3b" strokeWidth="0.4" />
-          <path d="M30,13 C34,10 36,13 34,16 C32,19 28,16 30,13 Z" fill="#839b7a" fillOpacity="0.35" stroke="#4a5d3b" strokeWidth="0.4" />
-          <path d="M42,14 C38,11 36,14 38,17 C40,20 44,17 42,14 Z" fill="#839b7a" fillOpacity="0.3" stroke="#4a5d3b" strokeWidth="0.4" />
-          <path d="M50,14 C54,11 56,13 54,16 C52,19 48,16 50,14 Z" fill="#839b7a" fillOpacity="0.3" stroke="#4a5d3b" strokeWidth="0.4" />
-          <path d="M62,13 C58,10 56,13 58,16 C60,19 64,16 62,13 Z" fill="#839b7a" fillOpacity="0.35" stroke="#4a5d3b" strokeWidth="0.4" />
-          <path d="M70,13 C74,10 76,13 74,16 C72,19 68,16 70,13 Z" fill="#839b7a" fillOpacity="0.35" stroke="#4a5d3b" strokeWidth="0.4" />
-          
-          <g transform="translate(36, 11)">
-            <circle cx="0" cy="0" r="1.2" fill="var(--color-gold)" />
-            <circle cx="-1.5" cy="0" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
-            <circle cx="1.5" cy="0" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
-            <circle cx="0" cy="-1.5" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
-            <circle cx="0" cy="1.5" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
-          </g>
-          <g transform="translate(56, 12)">
-            <circle cx="0" cy="0" r="1.2" fill="var(--color-gold)" />
-            <circle cx="-1.5" cy="0" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
-            <circle cx="1.5" cy="0" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
-            <circle cx="0" cy="-1.5" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
-            <circle cx="0" cy="1.5" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
-          </g>
-          <g transform="translate(76, 11)">
-            <circle cx="0" cy="0" r="1.2" fill="var(--color-gold)" />
-            <circle cx="-1.5" cy="0" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
-            <circle cx="1.5" cy="0" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
-            <circle cx="0" cy="-1.5" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
-            <circle cx="0" cy="1.5" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
-          </g>
-        </svg>
-      </div>
+      <SymmetricalTwig style={{ marginTop: '1.5rem', marginBottom: '2rem' }} />
 
       <span style={{
         fontFamily: 'var(--font-serif)',
