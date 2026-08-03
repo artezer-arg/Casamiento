@@ -221,14 +221,38 @@ export default function Cover({ config, photos }) {
         </div>
       )}
 
-      {/* Calligraphy branch ornament at the bottom of page 1 */}
-      <div style={{ color: 'var(--color-gold)', display: 'flex', justifyContent: 'center', marginTop: '1.5rem', marginBottom: '2rem' }}>
-        <svg width="60" height="15" viewBox="0 0 100 20" fill="none" stroke="currentColor" strokeWidth="1.2">
-          <path d="M10,10 Q50,15 90,10" />
-          <path d="M50,10 C50,10 45,5 42,7 C39,9 43,12 43,12 Z" fill="currentColor" opacity="0.4" />
-          <path d="M58,10 C58,10 63,5 66,7 C69,9 65,12 65,12 Z" fill="currentColor" opacity="0.4" />
-          <path d="M30,10 C30,10 25,6 23,8 C21,10 24,12 24,12 Z" fill="currentColor" opacity="0.4" />
-          <path d="M70,10 C70,10 75,6 77,8 C79,10 76,12 76,12 Z" fill="currentColor" opacity="0.4" />
+      {/* Detailed eucalyptus leaf and flower branch ornament */}
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem', marginBottom: '2rem' }}>
+        <svg width="120" height="30" viewBox="0 0 100 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10,12 C35,16 65,16 90,12" stroke="#4a5d3b" strokeWidth="0.8" strokeLinecap="round" />
+          <path d="M22,13 C18,10 16,13 18,16 C20,19 24,16 22,13 Z" fill="#839b7a" fillOpacity="0.35" stroke="#4a5d3b" strokeWidth="0.4" />
+          <path d="M30,13 C34,10 36,13 34,16 C32,19 28,16 30,13 Z" fill="#839b7a" fillOpacity="0.35" stroke="#4a5d3b" strokeWidth="0.4" />
+          <path d="M42,14 C38,11 36,14 38,17 C40,20 44,17 42,14 Z" fill="#839b7a" fillOpacity="0.3" stroke="#4a5d3b" strokeWidth="0.4" />
+          <path d="M50,14 C54,11 56,13 54,16 C52,19 48,16 50,14 Z" fill="#839b7a" fillOpacity="0.3" stroke="#4a5d3b" strokeWidth="0.4" />
+          <path d="M62,13 C58,10 56,13 58,16 C60,19 64,16 62,13 Z" fill="#839b7a" fillOpacity="0.35" stroke="#4a5d3b" strokeWidth="0.4" />
+          <path d="M70,13 C74,10 76,13 74,16 C72,19 68,16 70,13 Z" fill="#839b7a" fillOpacity="0.35" stroke="#4a5d3b" strokeWidth="0.4" />
+          
+          <g transform="translate(36, 11)">
+            <circle cx="0" cy="0" r="1.2" fill="var(--color-gold)" />
+            <circle cx="-1.5" cy="0" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
+            <circle cx="1.5" cy="0" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
+            <circle cx="0" cy="-1.5" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
+            <circle cx="0" cy="1.5" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
+          </g>
+          <g transform="translate(56, 12)">
+            <circle cx="0" cy="0" r="1.2" fill="var(--color-gold)" />
+            <circle cx="-1.5" cy="0" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
+            <circle cx="1.5" cy="0" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
+            <circle cx="0" cy="-1.5" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
+            <circle cx="0" cy="1.5" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
+          </g>
+          <g transform="translate(76, 11)">
+            <circle cx="0" cy="0" r="1.2" fill="var(--color-gold)" />
+            <circle cx="-1.5" cy="0" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
+            <circle cx="1.5" cy="0" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
+            <circle cx="0" cy="-1.5" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
+            <circle cx="0" cy="1.5" r="0.9" fill="#ffffff" stroke="var(--color-gold)" strokeWidth="0.25" />
+          </g>
         </svg>
       </div>
 
