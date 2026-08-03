@@ -6,21 +6,33 @@ import AdminPanel from './pages/AdminPanel';
 
 function AppContent() {
   const { currentUser } = useAppContext();
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
-  // Monitor URL pathname changes (SPA routing)
+  // Helper to extract clean path supporting both browser pathnames and hash fallbacks
+  const getRoutePath = () => {
+    const hash = window.location.hash; // e.g. '#/admin' or '#admin'
+    const pathname = window.location.pathname; // e.g. '/admin'
+    
+    if (hash === '#/admin' || hash === '#admin') {
+      return '/admin';
+    }
+    return pathname;
+  };
+
+  const [currentPath, setCurrentPath] = useState(getRoutePath());
+
+  // Monitor URL pathname and hash changes (SPA routing)
   useEffect(() => {
     const handleLocationChange = () => {
-      setCurrentPath(window.location.pathname);
+      setCurrentPath(getRoutePath());
     };
 
     window.addEventListener('popstate', handleLocationChange);
-    
-    // Custom event listener for programmatic router navigation
+    window.addEventListener('hashchange', handleLocationChange);
     window.addEventListener('navigate', handleLocationChange);
 
     return () => {
       window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('hashchange', handleLocationChange);
       window.removeEventListener('navigate', handleLocationChange);
     };
   }, []);
