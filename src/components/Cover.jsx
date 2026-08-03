@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
+import EucalyptusCorner from './EucalyptusCorner';
 
 
 
@@ -70,8 +71,8 @@ export default function Cover({ config, photos }) {
     <div style={{ position: 'relative', width: '100%', padding: '3.5rem 1.5rem 2.5rem 1.5rem', textAlign: 'center', zIndex: 1 }}>
       
       {/* Decorative leaf branch corner framing */}
-      <div className="watercolor-branch-top-right" />
-      <div className="watercolor-branch-bottom-left" />
+      <EucalyptusCorner className="watercolor-branch-top-right" />
+      <EucalyptusCorner className="watercolor-branch-bottom-left" />
 
       {/* Intro Quote */}
       <p style={{

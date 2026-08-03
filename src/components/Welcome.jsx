@@ -1,12 +1,13 @@
 import React from 'react';
 import { Mail } from 'lucide-react';
+import EucalyptusCorner from './EucalyptusCorner';
 
 export default function Welcome({ onEnter, nombres = 'Nestor & Pame' }) {
   return (
     <div className="welcome-screen" style={{ position: 'relative', overflow: 'hidden' }}>
       {/* Decorative leaf branch corner framing for welcome screen */}
-      <div className="watercolor-branch-top-right" />
-      <div className="watercolor-branch-bottom-left" />
+      <EucalyptusCorner className="watercolor-branch-top-right" />
+      <EucalyptusCorner className="watercolor-branch-bottom-left" />
 
       <div className="welcome-box animate-fade-in-up" style={{ zIndex: 11 }}>
         {/* Elegant Botanical Ornament */}

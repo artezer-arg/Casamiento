@@ -1,4 +1,5 @@
 import React from 'react';
+import EucalyptusCorner from './EucalyptusCorner';
 
 export default function Frase({ config }) {
   const general = config?.general || {};
@@ -11,7 +12,7 @@ export default function Frase({ config }) {
     <section id="frase-emotiva" className="phrase-container" style={{ position: 'relative', overflow: 'hidden', padding: '4rem 1.5rem', textAlign: 'center' }}>
       
       {/* Detailed Eucalyptus watermark background top right */}
-      <div className="bg-leaves bg-leaves-top-right" />
+      <EucalyptusCorner className="bg-leaves bg-leaves-top-right" />
 
       <div className="animate-fade-in-up" style={{ maxWidth: '320px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
         
@@ -80,7 +81,7 @@ export default function Frase({ config }) {
       </div>
 
       {/* Detailed Eucalyptus watermark background bottom left */}
-      <div className="bg-leaves bg-leaves-bottom-left" />
+      <EucalyptusCorner className="bg-leaves bg-leaves-bottom-left" />
     </section>
   );
 }
