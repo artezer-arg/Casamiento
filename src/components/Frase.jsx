@@ -11,14 +11,7 @@ export default function Frase({ config }) {
     <section id="frase-emotiva" className="phrase-container" style={{ position: 'relative', overflow: 'hidden', padding: '4rem 1.5rem', textAlign: 'center' }}>
       
       {/* Detailed Eucalyptus watermark background top right */}
-      <svg className="bg-leaves bg-leaves-top-right" viewBox="0 0 120 120" fill="none" style={{ opacity: 0.06, width: '180px', height: 'auto', position: 'absolute', top: '-10px', right: '-10px', transform: 'rotate(90deg)', pointerEvents: 'none' }}>
-        <path d="M120 0C95 12 70 32 50 62C40 77 35 92 30 112" stroke="#4a5d3b" strokeWidth="1.2" />
-        <path d="M100 12C95 6 86 10 90 18C94 26 103 22 99 14Z" fill="#839b7a" fillOpacity="0.4" stroke="#4a5d3b" strokeWidth="0.6"/>
-        <path d="M85 24C78 19 72 25 78 32C84 39 90 33 86 26Z" fill="#839b7a" fillOpacity="0.4" stroke="#4a5d3b" strokeWidth="0.6"/>
-        <path d="M70 40C64 34 56 38 60 46C64 54 72 50 68 42Z" fill="#839b7a" fillOpacity="0.4" stroke="#4a5d3b" strokeWidth="0.6"/>
-        <path d="M55 58C48 52 42 56 46 64C50 72 58 68 54 60Z" fill="#839b7a" fillOpacity="0.4" stroke="#4a5d3b" strokeWidth="0.6"/>
-        <path d="M42 78C36 72 30 76 34 84C38 92 46 88 42 80Z" fill="#839b7a" fillOpacity="0.4" stroke="#4a5d3b" strokeWidth="0.6"/>
-      </svg>
+      <div className="bg-leaves bg-leaves-top-right" />
 
       <div className="animate-fade-in-up" style={{ maxWidth: '320px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
         
@@ -87,13 +80,7 @@ export default function Frase({ config }) {
       </div>
 
       {/* Detailed Eucalyptus watermark background bottom left */}
-      <svg className="bg-leaves bg-leaves-bottom-left" viewBox="0 0 120 120" fill="none" style={{ opacity: 0.06, width: '180px', height: 'auto', position: 'absolute', bottom: '-10px', left: '-10px', transform: 'rotate(-90deg)', pointerEvents: 'none' }}>
-        <path d="M0 120C25 108 50 88 70 58C80 43 85 28 90 8" stroke="#4a5d3b" strokeWidth="1.2" />
-        <path d="M20 108C25 114 34 110 30 102C26 94 17 98 21 106Z" fill="#839b7a" fillOpacity="0.4" stroke="#4a5d3b" strokeWidth="0.6"/>
-        <path d="M35 96C42 101 48 95 42 88C36 81 30 87 34 94Z" fill="#839b7a" fillOpacity="0.4" stroke="#4a5d3b" strokeWidth="0.6"/>
-        <path d="M50 80C56 86 64 82 60 74C56 66 48 70 52 78Z" fill="#839b7a" fillOpacity="0.4" stroke="#4a5d3b" strokeWidth="0.6"/>
-        <path d="M65 62C72 68 78 64 74 56C70 48 62 52 66 60Z" fill="#839b7a" fillOpacity="0.4" stroke="#4a5d3b" strokeWidth="0.6"/>
-      </svg>
+      <div className="bg-leaves bg-leaves-bottom-left" />
     </section>
   );
 }
