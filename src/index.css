@@ -2366,6 +2366,25 @@ section:last-of-type::after {
   transform: scaleY(-1) rotate(90deg);
 }
 
+/* Cascading watercolor bouquet for top of Cover */
+.watercolor-bouquet-top {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  height: 240px;
+  background-image: url('/watercolor_bouquet.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top center;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.95;
+  mix-blend-mode: multiply;
+}
+
 /* Eucalyptus Side branches framing the names */
 .names-branch-left {
   position: absolute;

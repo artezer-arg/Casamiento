@@ -88,8 +88,10 @@ export default function Cover({ config, photos }) {
   return (
     <div style={{ position: 'relative', width: '100%', padding: '3.5rem 1.5rem 2.5rem 1.5rem', textAlign: 'center', zIndex: 1 }}>
       
+      {/* Cascading watercolor bouquet at top center */}
+      <div className="watercolor-bouquet-top" />
+      
       {/* Decorative leaf branch corner framing */}
-      <EucalyptusCorner className="watercolor-branch-top-left" />
       <EucalyptusCorner className="watercolor-branch-bottom-left" />
 
       {/* Intro Quote */}

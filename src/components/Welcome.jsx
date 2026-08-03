@@ -5,8 +5,10 @@ import EucalyptusCorner from './EucalyptusCorner';
 export default function Welcome({ onEnter, nombres = 'Nestor & Pame' }) {
   return (
     <div className="welcome-screen" style={{ position: 'relative', overflow: 'hidden' }}>
+      {/* Cascading watercolor bouquet at top center */}
+      <div className="watercolor-bouquet-top" />
+      
       {/* Decorative leaf branch corner framing for welcome screen */}
-      <EucalyptusCorner className="watercolor-branch-top-right" />
       <EucalyptusCorner className="watercolor-branch-bottom-left" />
 
       <div className="welcome-box animate-fade-in-up" style={{ zIndex: 11 }}>
